@@ -37,7 +37,7 @@
         .small-list-item { font-size: 0.85rem; color: #666; margin-top: 9px; }
         .extra-small-text { font-size: 0.75rem; color: #555; margin-top: 5px; }
         
-        /* Стили кнопок музыки */
+        /* Музыкальные кнопки */
         .music-item { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; }
         .play-btn { background: none; border: 1px solid #333; color: #666; font-size: 0.75rem; padding: 3px 8px; cursor: pointer; border-radius: 3px; font-family: monospace; transition: 0.2s; }
         .play-btn:hover { color: #fff; border-color: #666; }
@@ -87,32 +87,32 @@
                     <li class="music-item">
                         <span>КАРТА В БЛОКЕ - главный герой</span>
                         <button class="play-btn" onclick="toggleSong('song1', this)">play</button>
-                        <audio id="song1" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                        <audio id="song1" loop><source src="song1.mp3" type="audio/mp3"></audio>
                     </li>
                     <li class="music-item">
                         <span>STARTAFIGHT - Joey Valence & Brae</span>
                         <button class="play-btn" onclick="toggleSong('song2', this)">play</button>
-                        <audio id="song2" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                        <audio id="song2" loop><source src="song2.mp3" type="audio/mp3"></audio>
                     </li>
                     <li class="music-item">
                         <span>Муза - Нервы</span>
                         <button class="play-btn" onclick="toggleSong('song3', this)">play</button>
-                        <audio id="song3" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                        <audio id="song3" loop><source src="song3.mp3" type="audio/mp3"></audio>
                     </li>
                     <li class="music-item">
                         <span>Спать - MILKOVSKYI</span>
                         <button class="play-btn" onclick="toggleSong('song4', this)">play</button>
-                        <audio id="song4" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                        <audio id="song4" loop><source src="song4.mp3" type="audio/mp3"></audio>
                     </li>
                     <li class="music-item">
                         <span>Killkillkill - huntme, h3ad4che</span>
                         <button class="play-btn" onclick="toggleSong('song5', this)">play</button>
-                        <audio id="song5" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                        <audio id="song5" loop><source src="song5.mp3" type="audio/mp3"></audio>
                     </li>
                     <li class="music-item">
                         <span>Im Sorry Mom - Marino</span>
                         <button class="play-btn" onclick="toggleSong('song6', this)">play</button>
-                        <audio id="song6" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                        <audio id="song6" loop><source src="song6.mp3" type="audio/mp3"></audio>
                     </li>
                 </ul>
             </div>
@@ -129,10 +129,10 @@
                 </div>
             </div>
 
-            <!-- Фотографии котиков в самом низу (Строки 110 и 111) -->
+            <!-- Фотографии котиков в самом низу -->
             <div class="gallery">
-                <img src="ССЫЛКА_НА_ПЕРВОЕ_ФОТО" alt="Cat 1">
-                <img src="ССЫЛКА_НА_ВТОРОЕ_ФОТО" alt="Cat 2">
+                <img src="https://i.postimg.cc/G275ccP3/zimo.jpg" alt="Cat 1">
+                <img src="https://i.postimg.cc/BnF9M1TN/spit.jpg" alt="Cat 2">
             </div>
         </div>
     </div>
@@ -162,7 +162,6 @@
                 btn.innerText = 'play';
                 btn.classList.remove('playing');
             } else {
-                // Останавливаем другие песни, если они играли
                 const allAudios = document.querySelectorAll('audio');
                 const allButtons = document.querySelectorAll('.play-btn');
                 allAudios.forEach(track => track.pause());
@@ -171,9 +170,8 @@
                     button.classList.remove('playing');
                 });
 
-                // Запускаем выбранную песню на тихой громкости
                 audio.volume = 0.2;
-                audio.play().catch(e => console.log("Файл загружается..."));
+                audio.play().catch(e => console.log("Файл воспроизводится"));
                 btn.innerText = 'pause';
                 btn.classList.add('playing');
             }
