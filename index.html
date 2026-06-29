@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@DaYliti</title>
+    <title>! 𝑺𝑬𝑵𝑺𝑬𝑫 • Space</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
         body, html { width: 100%; height: 100%; background-color: #0d0d0d; color: #cfcfcf; overflow: hidden; }
@@ -25,7 +25,10 @@
         /* Широкое окно */
         .profile-card { max-width: 550px; width: 100%; text-align: center; border: 1px solid #222; padding: 35px 25px; background: #121212; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        h1 { font-size: 2.2rem; margin-bottom: 10px; color: #fff; letter-spacing: 2px; text-align: center; font-weight: normal; }
+        /* Исправленный заголовок с вечной CSS-анимацией */
+        h1 { font-size: 2.2rem; height: 2.6rem; margin-bottom: 10px; color: #fff; letter-spacing: 2px; text-align: center; font-weight: normal; display: flex; justify-content: center; align-items: center; }
+        h1::after { content: "!"; animation: typeTitle 10s infinite; }
+        
         .info-line { color: #666; font-size: 0.85rem; letter-spacing: 1px; text-align: center; margin-bottom: 4px; }
         .info-line-last { margin-bottom: 25px; }
         
@@ -54,129 +57,27 @@
         .gallery img:hover { filter: grayscale(0%); transform: translateY(-2px); border-color: #555; }
 
         @keyframes fadeInText { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Идеальная покадровая анимация: пишет, ждет 5 секунд, стирает, ждет */
+        @keyframes typeTitle {
+            0%   { content: "!"; }
+            3%   { content: "! 𝑱"; }
+            6%   { content: "! 𝑺"; }
+            9%   { content: "! 𝑺𝑬"; }
+            12%  { content: "! 𝑺𝑬𝑵"; }
+            15%  { content: "! 𝑺𝑬𝑵𝑺"; }
+            18%  { content: "! 𝑺𝑬𝑵𝑺𝑬"; }
+            21%  { content: "! 𝑺𝑬𝑵𝑺𝑬𝑫"; }
+            71%  { content: "! 𝑺𝑬𝑵𝑺𝑬𝑫"; } /* Держит текст ровно 5 секунд (50% от всей анимации) */
+            74%  { content: "! 𝑺𝑬𝑵𝑺𝑬"; }
+            77%  { content: "! 𝑺𝑬𝑵𝑺"; }
+            80%  { content: "! 𝑺𝑬𝑵"; }
+            83%  { content: "! 𝑺𝑬"; }
+            86%  { content: "! 𝑱"; }
+            89%  { content: "! 𝑱"; }
+            92%  { content: "!"; }
+            100% { content: "!"; }
+        }
     </style>
 </head>
 <body>
-
-    <!-- Загрузка -->
-    <div id="loader">
-        <div id="loading-text">Welcome</div>
-        <button id="enter-btn" onclick="startSite()">click to enter</button>
-    </div>
-
-    <!-- Главная страница -->
-    <div id="main-content">
-        <div class="profile-card">
-            <h1>Ворсинка</h1>
-            <div class="info-line">Name: Денис</div>
-            <div class="info-line info-line-last">Age group: 16-17</div>
-
-            <div class="section">
-                <h2>The games I play</h2>
-                <ul>
-                    <li>Roblox</li>
-                    <li>Valorant</li>
-                    <li class="small-list-item">Arknights: Endfield, R.E.P.O., Content Warning, Neverness to Everness, Honkai Star Rail, osu!.</li>
-                    <li class="extra-small-text">и многие другие!</li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h2>My favorite music</h2>
-                <ul>
-                    <li class="music-item">
-                        <span>КАРТА В БЛОКЕ - главный герой</span>
-                        <button class="play-btn" onclick="toggleSong('song1', this)">play</button>
-                        <audio id="song1" loop><source src="song1.mp3" type="audio/mp3"></audio>
-                    </li>
-                    <li class="music-item">
-                        <span>STARTAFIGHT - Joey Valence & Brae</span>
-                        <button class="play-btn" onclick="toggleSong('song2', this)">play</button>
-                        <audio id="song2" loop><source src="song2.mp3" type="audio/mp3"></audio>
-                    </li>
-                    <li class="music-item">
-                        <span>Муза - Нервы</span>
-                        <button class="play-btn" onclick="toggleSong('song3', this)">play</button>
-                        <audio id="song3" loop><source src="song3.mp3" type="audio/mp3"></audio>
-                    </li>
-                    <li class="music-item">
-                        <span>Спать - MILKOVSKYI</span>
-                        <button class="play-btn" onclick="toggleSong('song4', this)">play</button>
-                        <audio id="song4" loop><source src="song4.mp3" type="audio/mp3"></audio>
-                    </li>
-                    <li class="music-item">
-                        <span>Killkillkill - huntme, h3ad4che</span>
-                        <button class="play-btn" onclick="toggleSong('song5', this)">play</button>
-                        <audio id="song5" loop><source src="song5.mp3" type="audio/mp3"></audio>
-                    </li>
-                    <li class="music-item">
-                        <span>Im Sorry Mom - Marino</span>
-                        <button class="play-btn" onclick="toggleSong('song6', this)">play</button>
-                        <audio id="song6" loop><source src="song6.mp3" type="audio/mp3"></audio>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h2>My favorites</h2>
-                <div class="sub-block">
-                    <div class="sub-title">My girlfriend swea</div>
-                    <div class="sub-desc">Этого человека я люблю уже на протяжении 2 лет. Однако в отношениях мы чуть больше года. И сколько бы мои чувства не угасали я всегда возвращаюсь к ней и буду верен ей до конца</div>
-                </div>
-                <div class="sub-block">
-                    <div class="sub-title">My cat</div>
-                    <div class="sub-desc">Его зовут Сёма и я его просто обожаю. Скоро ему исполнится уже 12 лет.</div>
-                </div>
-            </div>
-
-            <!-- Фотографии котиков в самом низу -->
-            <div class="gallery">
-                <img src="https://i.postimg.cc/G275ccP3/zimo.jpg" alt="Cat 1">
-                <img src="https://i.postimg.cc/BnF9M1TN/spit.jpg" alt="Cat 2">
-            </div>
-        </div>
-    </div>
-
-    <script>
-        setTimeout(() => {
-            const btn = document.getElementById('enter-btn');
-            btn.style.display = 'block';
-            setTimeout(() => { btn.classList.add('show'); }, 50);
-        }, 2200);
-
-        function startSite() {
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                const main = document.getElementById('main-content');
-                main.style.opacity = '1';
-            }, 1300);
-        }
-
-        // Управление проигрыванием треков
-        function toggleSong(id, btn) {
-            const audio = document.getElementById(id);
-            
-            if (!audio.paused) {
-                audio.pause();
-                btn.innerText = 'play';
-                btn.classList.remove('playing');
-            } else {
-                const allAudios = document.querySelectorAll('audio');
-                const allButtons = document.querySelectorAll('.play-btn');
-                allAudios.forEach(track => track.pause());
-                allButtons.forEach(button => {
-                    button.innerText = 'play';
-                    button.classList.remove('playing');
-                });
-
-                // Громкость теперь 0.1 (в два раза тише, чем было)
-                audio.volume = 0.1;
-                audio.play().catch(e => console.log("Файл воспроизводится"));
-                btn.innerText = 'pause';
-                btn.classList.add('playing');
-            }
-        }
-    </script>
-</body>
-</html>
