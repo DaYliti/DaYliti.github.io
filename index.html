@@ -3,33 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
     <title>@DaYliti</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
-        
-        /* Главный экран и базовая заливка */
-        body, html { width: 100%; height: 100%; color: #cfcfcf; overflow: hidden; position: relative; background-color: #0d0d0d; }
-        
-        /* Скрытый размытый GIF фон */
-        body::before { 
-            content: ""; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: url('background.gif') no-repeat center center fixed; 
-            background-size: cover; 
-            filter: blur(8px); 
-            z-index: -1; 
-            opacity: 0; 
-            transition: opacity 1.5s ease; 
-        }
-
-        /* Показываем фон после клика */
-        body.show-bg::before {
-            opacity: 1;
-        }
+        body, html { width: 100%; height: 100%; background-color: #0d0d0d; color: #cfcfcf; overflow: hidden; }
         
         /* Экран загрузки */
         #loader { position: fixed; top:0; left:0; width:100%; height:100%; background:#0d0d0d; z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition: opacity 1.3s ease; }
@@ -48,10 +26,7 @@
         /* Широкое окно */
         .profile-card { max-width: 550px; width: 100%; text-align: center; border: 1px solid #222; padding: 35px 25px; background: #121212; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        /* Стили для анимации названия */
-        h1 { font-size: 2.2rem; height: 2.6rem; margin-bottom: 10px; color: #fff; letter-spacing: 2px; text-align: center; font-weight: normal; display: flex; justify-content: center; align-items: center; }
-        h1::after { content: "!"; animation: typeTitle 12s infinite; }
-        
+        h1 { font-size: 2.2rem; margin-bottom: 10px; color: #fff; letter-spacing: 2px; text-align: center; font-weight: normal; }
         .info-line { color: #666; font-size: 0.85rem; letter-spacing: 1px; text-align: center; margin-bottom: 4px; }
         .info-line-last { margin-bottom: 25px; }
         
@@ -80,27 +55,6 @@
         .gallery img:hover { filter: grayscale(0%); transform: translateY(-2px); border-color: #555; }
 
         @keyframes fadeInText { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Бесконечная покадровая анимация ! 𝑺𝑬𝑵𝑺𝑬𝑫 с паузой в 2 секунды */
-        @keyframes typeTitle {
-            0%   { content: "!"; }
-            3%   { content: "! 𝑺"; }
-            6%   { content: "! 𝑺𝑬"; }
-            9%   { content: "! 𝑺𝑬𝑵"; }
-            12%  { content: "! 𝑺𝑬𝑵𝑺"; }
-            15%  { content: "! 𝑺𝑬𝑵𝑺𝑬"; }
-            18%  { content: "! 𝑺𝑬𝑵𝑺𝑬𝑫"; }
-            60%  { content: "! 𝑺𝑬𝑵𝑺𝑬𝑫"; } /* Пауза 2 секунды */
-            63%  { content: "! 𝑺𝑬𝑵𝑺𝑬"; }
-            66%  { content: "! 𝑺𝑬𝑵𝑺"; }
-            69%  { content: "! 𝑺𝑬𝑵"; }
-            72%  { content: "! 𝑺𝑬"; }
-            75%  { content: "! 𝑺"; }
-            78%  { content: "!"; }
-            100% { content: "!"; }
-        }
-    </style>
-
     </style>
 </head>
 <body>
@@ -191,10 +145,7 @@
             setTimeout(() => { btn.classList.add('show'); }, 50);
         }, 2200);
 
-                function startSite() {
-            // Активируем плавное проявление гиф-фона в момент клика
-            document.body.classList.add('show-bg');
-
+        function startSite() {
             document.getElementById('loader').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('loader').style.display = 'none';
