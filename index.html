@@ -170,7 +170,8 @@
                     button.classList.remove('playing');
                 });
 
-                audio.volume = 0.2;
+                // Громкость теперь 0.1 (в два раза тише, чем было)
+                audio.volume = 0.1;
                 audio.play().catch(e => console.log("Файл воспроизводится"));
                 btn.innerText = 'pause';
                 btn.classList.add('playing');
