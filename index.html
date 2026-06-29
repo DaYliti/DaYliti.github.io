@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Minimal Space</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
+        body, html { width: 100%; height: 100%; background-color: #121212; color: #e0e0e0; overflow: hidden; }
+        
+        /* Экран загрузки */
+        #loader { position: fixed; top:0; left:0; width:100%; height:100%; background:#121212; z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition: opacity 1s ease; }
+        #loading-text { font-size: 2rem; opacity: 0; animation: fadeIn 2.5s forwards; color: #fff; letter-spacing: 5px; }
+        #enter-btn { margin-top: 20px; font-size: 1rem; opacity: 0; cursor: pointer; color: #888; border: 1px solid #444; padding: 10px 20px; background: none; transition: 0.3s; display: none; }
+        #enter-btn:hover { color: #fff; border-color: #fff; background: #222; }
+
+        /* Главный контент */
+        #main-content { opacity: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; transition: opacity 1s ease; }
+        .profile-card { max-width: 500px; width: 100%; text-align: center; border: 1px solid #333; padding: 30px; background: #1a1a1a; border-radius: 8px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; color: #fff; }
+        .age { color: #888; margin-bottom: 20px; font-size: 0.9rem; }
+        .section { margin-top: 25px; text-align: left; }
+        .section h2 { font-size: 1.2rem; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 10px; color: #bbb; }
+        ul { list-style: none; }
+        ul li { margin: 5px 0; color: #aaa; font-size: 0.95rem; }
+        
+        /* Блок кота */
+        .cat-block { background: #222; padding: 15px; margin-top: 20px; border-left: 3px solid #ffb703; border-radius: 4px; text-align: left; }
+        
+        /* Галерея */
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .gallery img { width: 100%; height: 150px; object-fit: cover; border-radius: 4px; filter: grayscale(30%); transition: 0.3s; }
+        .gallery img:hover { filter: grayscale(0%); transform: scale(1.02); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- Музыка на фоне -->
+    <audio id="bg-music" loop>
+        <source src="https://soundhelix.com" type="audio/mp3">
+    </audio>
+
+    <!-- Загрузка -->
+    <div id="loader">
+        <div id="loading-text">ДОБРО ПОЖАЛОВАТЬ</div>
+        <button id="enter-btn" onclick="startSite()">нажмите, чтобы продолжить</button>
+    </div>
+
+    <!-- Главная страница -->
+    <div id="main-content">
+        <div class="profile-card">
+            <h1>ТВОЙ_НИК</h1>
+            <div class="age">Возраст: 16-17 лет</div>
+
+            <div class="section">
+                <h2>🎬 Мои Фандомы</h2>
+                <ul>
+                    <li>✦ Фандом 1</li>
+                    <li>✦ Фандом 2</li>
+                    <li>✦ Фандом 3</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>🐾 Главный в доме</h2>
+                <div class="cat-block">
+                    <strong>Сёма</strong> — мой самый любимый на свете кот. Настоящий хозяин этой страницы.
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📸 Эстетика</h2>
+                <div class="gallery">
+                    <!-- Заглушки картинок аниме и котиков -->
+                    <img src="https://unsplash.com" alt="Кот">
+                    <img src="https://unsplash.com" alt="Кот 2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Показываем кнопку после плавного появления текста
+        setTimeout(() => {
+            const btn = document.getElementById('enter-btn');
+            btn.style.display = 'block';
+            setTimeout(() => btn.style.opacity = '1', 50);
+        }, 2500);
+
+        function startSite() {
+            // Запускаем музыку
+            const music = document.getElementById('bg-music');
+            music.play().catch(e => console.log("Музыка ждет клика"));
+
+            // Скрываем лоадер и показываем контент
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                const main = document.getElementById('main-content');
+                main.style.opacity = '1';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
