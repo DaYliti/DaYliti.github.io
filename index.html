@@ -11,32 +11,37 @@
         /* Экран загрузки */
         #loader { position: fixed; top:0; left:0; width:100%; height:100%; background:#0d0d0d; z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition: opacity 1.3s ease; }
         
-        /* Надпись Добро Пожаловать */
-        #loading-text { font-size: 1.8rem; opacity: 0; animation: fadeInText 2s forwards; color: #fff; letter-spacing: 7px; text-transform: uppercase; text-align: center; padding: 0 10px; }
+        /* Надпись Welcome */
+        #loading-text { font-size: 1.8rem; opacity: 0; animation: fadeInText 2s forwards; color: #fff; letter-spacing: 7px; text-align: center; padding: 0 10px; }
         
-        /* Кнопка входа с плавной анимацией выдвижения */
-        #enter-btn { margin-top: 30px; font-size: 0.9rem; cursor: pointer; color: #777; border: 1px solid #333; padding: 12px 24px; background: none; text-transform: lowercase; display: none; opacity: 0; transform: translateY(20px); transition: opacity 1.5s ease, transform 1.5s ease, color 0.4s, border-color 0.4s, background 0.4s; }
+        /* Кнопка входа */
+        #enter-btn { margin-top: 30px; font-size: 0.9rem; cursor: pointer; color: #777; border: 1px solid #333; padding: 12px 24px; background: none; display: none; opacity: 0; transform: translateY(20px); transition: opacity 1.5s ease, transform 1.5s ease, color 0.4s, border-color 0.4s, background 0.4s; }
         #enter-btn:hover { color: #fff; border-color: #fff; background: #151515; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
-
-        /* Появление кнопки */
         #enter-btn.show { display: block; opacity: 1; transform: translateY(0); }
 
         /* Главный контент */
         #main-content { opacity: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 20px; transition: opacity 1.5s ease; }
         .profile-card { max-width: 450px; width: 100%; text-align: center; border: 1px solid #222; padding: 35px 25px; background: #121212; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { font-size: 2.2rem; margin-bottom: 5px; color: #fff; letter-spacing: 2px; }
-        .age { color: #666; margin-bottom: 25px; font-size: 0.85rem; letter-spacing: 1px; }
+        
+        h1 { font-size: 2.2rem; margin-bottom: 10px; color: #fff; letter-spacing: 2px; text-align: center; font-weight: normal; }
+        .info-line { color: #666; font-size: 0.85rem; letter-spacing: 1px; text-align: center; margin-bottom: 4px; }
+        .info-line-last { margin-bottom: 25px; }
+        
         .section { margin-top: 30px; text-align: left; }
-        .section h2 { font-size: 1.1rem; border-bottom: 1px solid #222; padding-bottom: 6px; margin-bottom: 12px; color: #999; letter-spacing: 1px; }
+        .section h2 { font-size: 1.1rem; border-bottom: 1px solid #222; padding-bottom: 6px; margin-bottom: 12px; color: #999; letter-spacing: 1px; font-weight: normal; }
+        
         ul { list-style: none; }
-        ul li { margin: 7px 0; color: #8a8a8a; font-size: 0.9rem; }
+        ul li { margin: 7px 0; color: #8a8a8a; font-size: 0.95rem; }
+        .small-list-item { font-size: 0.85rem; color: #666; margin-top: 5px; }
+        .extra-small-text { font-size: 0.75rem; color: #555; margin-top: 5px; }
         
-        /* Блок кота */
-        .cat-block { background: #161616; padding: 15px; margin-top: 10px; border-left: 2px solid #a3a3a3; border-radius: 4px; text-align: left; font-size: 0.9rem; line-height: 1.4; color: #999; }
-        .cat-block strong { color: #fff; }
-        
+        .sub-block { margin-bottom: 20px; }
+        .sub-block:last-child { margin-bottom: 0; }
+        .sub-title { font-size: 0.95rem; color: #aaa; margin-bottom: 4px; }
+        .sub-desc { font-size: 0.85rem; color: #666; line-height: 1.4; }
+
         /* Галерея */
-        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
         .gallery img { width: 100%; height: 140px; object-fit: cover; border-radius: 4px; filter: grayscale(50%); transition: 0.4s ease; border: 1px solid #222; }
         .gallery img:hover { filter: grayscale(0%); transform: translateY(-2px); border-color: #555; }
 
@@ -45,7 +50,7 @@
 </head>
 <body>
 
-    <!-- Фоновое аудио -->
+    <!-- Фоновое аудио (будет играть STARTAFIGHT) -->
     <audio id="bg-music" loop prefetch="auto">
         <source src="https://audio.com" type="audio/wav">
         <source src="https://soundhelix.com" type="audio/mp3">
@@ -53,65 +58,73 @@
 
     <!-- Загрузка -->
     <div id="loader">
-        <div id="loading-text">Добро Пожаловать</div>
-        <button id="enter-btn" onclick="startSite()">нажмите, чтобы продолжить</button>
+        <div id="loading-text">Welcome</div>
+        <button id="enter-btn" onclick="startSite()">click to enter</button>
     </div>
 
     <!-- Главная страница -->
     <div id="main-content">
         <div class="profile-card">
-            <h1>ВОРСИНКА</h1>
-            <div class="age">Возраст: 16-17 лет</div>
+            <h1>Ворсинка</h1>
+            <div class="info-line">Имя: Денис</div>
+            <div class="info-line info-line-last">Возрастная группа: 16-17 лет</div>
 
             <div class="section">
-                <h2>🎬 Мои Фандомы</h2>
+                <h2>The games I play</h2>
                 <ul>
-                    <li>✦ Anime / Manga</li>
-                    <li>✦ Gaming</li>
-                    <li>✦ Music Culture</li>
+                    <li>Roblox, Valorant</li>
+                    <li class="small-list-item">Arknights: Endfield, R.E.P.O., Content Warning, Neverness to Everness, Honkai Star Rail, osu!.</li>
+                    <li class="extra-small-text">и многие другие!</li>
                 </ul>
             </div>
 
             <div class="section">
-                <h2>🐾 Главный в доме</h2>
-                <div class="cat-block">
-                    <strong>Сёма</strong> — мой самый любимый на свете кот. Настоящий хозяин этой страницы и главный ценитель тишины.
-                </div>
+                <h2>My favorite music</h2>
+                <ul>
+                    <li>КАРТА В БЛОКЕ - главный герой</li>
+                    <li>STARTAFIGHT - Joey Valence & Brae</li>
+                    <li>Муза - Нервы</li>
+                    <li>Спать - MILKOVSKYI</li>
+                    <li>Killkillkill - huntme, h3ad4che</li>
+                    <li>Im Sorry Mom - Marino</li>
+                </ul>
             </div>
 
             <div class="section">
-                <h2>📸 Эстетика</h2>
-                <div class="gallery">
-                    <!-- Минималистичные котики и аниме вайб -->
-                    <img src="https://unsplash.com" alt="Cat 1">
-                    <img src="https://unsplash.com" alt="Cat 2">
+                <h2>My favorites</h2>
+                <div class="sub-block">
+                    <div class="sub-title">My girlfriend swea</div>
+                    <div class="sub-desc">Этого человека я люблю уже на протяжении 2 лет. Однако в отношениях мы чуть больше года. И сколько бы мои чувства не угасали я всегда возвращаюсь к ней и буду верен ей до конца</div>
                 </div>
+                <div class="sub-block">
+                    <div class="sub-title">My cat</div>
+                    <div class="sub-desc">Его зовут Сёма и я его просто обожаю. Скоро ему исполнится уже 12 лет.</div>
+                </div>
+            </div>
+
+            <!-- Минималистичная эстетика картинок -->
+            <div class="gallery">
+                <img src="https://unsplash.com" alt="Cat">
+                <img src="https://unsplash.com" alt="Anime vibe">
             </div>
         </div>
     </div>
 
     <script>
-        // Медленное и плавное выдвижение кнопки снизу вверх
+        // Плавное появление кнопки внизу без изменения положения текста Welcome
         setTimeout(() => {
             const btn = document.getElementById('enter-btn');
-            btn.style.display = 'block'; // Включаем кнопку в структуру
-            
-            // Маленькая задержка, чтобы браузер успел применить display и включил плавную анимацию
+            btn.style.display = 'block';
             setTimeout(() => {
                 btn.classList.add('show');
             }, 50);
-        }, 2200); // Кнопка начнет выплывать через 2.2 секунды после текста
+        }, 2200);
 
         function startSite() {
             const music = document.getElementById('bg-music');
-            
-            // Выставляем тихую громкость (0.2 — это примерно 20% от максимума)
             music.volume = 0.2; 
-            
-            // Запуск воспроизведения
-            music.play().catch(e => console.log("Музыка ожидает разрешения браузера"));
+            music.play().catch(e => console.log("Музыка ожидает клика"));
 
-            // Анимация ухода экрана загрузки
             document.getElementById('loader').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('loader').style.display = 'none';
