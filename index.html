@@ -22,7 +22,7 @@
         /* Главный контент */
         #main-content { opacity: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 20px; transition: opacity 1.5s ease; }
         
-        /* Сделали окно шире (было 450px, стало 550px) */
+        /* Широкое окно */
         .profile-card { max-width: 550px; width: 100%; text-align: center; border: 1px solid #222; padding: 35px 25px; background: #121212; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
         h1 { font-size: 2.2rem; margin-bottom: 10px; color: #fff; letter-spacing: 2px; text-align: center; font-weight: normal; }
@@ -37,6 +37,12 @@
         .small-list-item { font-size: 0.85rem; color: #666; margin-top: 9px; }
         .extra-small-text { font-size: 0.75rem; color: #555; margin-top: 5px; }
         
+        /* Стили кнопок музыки */
+        .music-item { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; }
+        .play-btn { background: none; border: 1px solid #333; color: #666; font-size: 0.75rem; padding: 3px 8px; cursor: pointer; border-radius: 3px; font-family: monospace; transition: 0.2s; }
+        .play-btn:hover { color: #fff; border-color: #666; }
+        .play-btn.playing { color: #fff; border-color: #fff; background: #222; }
+
         .sub-block { margin-bottom: 20px; }
         .sub-block:last-child { margin-bottom: 0; }
         .sub-title { font-size: 0.95rem; color: #aaa; margin-bottom: 4px; }
@@ -52,12 +58,6 @@
 </head>
 <body>
 
-    <!-- Фоновое аудио -->
-    <audio id="bg-music" loop prefetch="auto">
-        <source src="https://audio.com" type="audio/wav">
-        <source src="https://soundhelix.com" type="audio/mp3">
-    </audio>
-
     <!-- Загрузка -->
     <div id="loader">
         <div id="loading-text">Welcome</div>
@@ -69,12 +69,11 @@
         <div class="profile-card">
             <h1>Ворсинка</h1>
             <div class="info-line">Name: Денис</div>
-            <div class="info-line info-line-last">Age group: 16-17 лет</div>
+            <div class="info-line info-line-last">Age group: 16-17</div>
 
             <div class="section">
                 <h2>The games I play</h2>
                 <ul>
-                    <!-- Каждая основная игра теперь на отдельной строке -->
                     <li>Roblox</li>
                     <li>Valorant</li>
                     <li class="small-list-item">Arknights: Endfield, R.E.P.O., Content Warning, Neverness to Everness, Honkai Star Rail, osu!.</li>
@@ -85,12 +84,36 @@
             <div class="section">
                 <h2>My favorite music</h2>
                 <ul>
-                    <li>КАРТА В БЛОКЕ - главный герой</li>
-                    <li>STARTAFIGHT - Joey Valence & Brae</li>
-                    <li>Муза - Нервы</li>
-                    <li>Спать - MILKOVSKYI</li>
-                    <li>Killkillkill - huntme, h3ad4che</li>
-                    <li>Im Sorry Mom - Marino</li>
+                    <li class="music-item">
+                        <span>КАРТА В БЛОКЕ - главный герой</span>
+                        <button class="play-btn" onclick="toggleSong('song1', this)">play</button>
+                        <audio id="song1" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                    </li>
+                    <li class="music-item">
+                        <span>STARTAFIGHT - Joey Valence & Brae</span>
+                        <button class="play-btn" onclick="toggleSong('song2', this)">play</button>
+                        <audio id="song2" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                    </li>
+                    <li class="music-item">
+                        <span>Муза - Нервы</span>
+                        <button class="play-btn" onclick="toggleSong('song3', this)">play</button>
+                        <audio id="song3" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                    </li>
+                    <li class="music-item">
+                        <span>Спать - MILKOVSKYI</span>
+                        <button class="play-btn" onclick="toggleSong('song4', this)">play</button>
+                        <audio id="song4" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                    </li>
+                    <li class="music-item">
+                        <span>Killkillkill - huntme, h3ad4che</span>
+                        <button class="play-btn" onclick="toggleSong('song5', this)">play</button>
+                        <audio id="song5" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                    </li>
+                    <li class="music-item">
+                        <span>Im Sorry Mom - Marino</span>
+                        <button class="play-btn" onclick="toggleSong('song6', this)">play</button>
+                        <audio id="song6" loop><source src="https://soundhelix.com" type="audio/mp3"></audio>
+                    </li>
                 </ul>
             </div>
 
@@ -106,10 +129,10 @@
                 </div>
             </div>
 
-            <!-- Фотографии в самом низу с подписями Cat 1 и Cat 2 -->
+            <!-- Фотографии котиков внизу -->
             <div class="gallery">
-                <img src="https://i.postimg.cc/BnF9M1TN/spit.jpg" alt="Cat 1">
-                <img src="https://i.postimg.cc/G275ccP3/zimo.jpg" alt="Cat 2">
+                <img src="https://unsplash.com" alt="Cat 1">
+                <img src="https://unsplash.com" alt="Cat 2">
             </div>
         </div>
     </div>
@@ -118,22 +141,42 @@
         setTimeout(() => {
             const btn = document.getElementById('enter-btn');
             btn.style.display = 'block';
-            setTimeout(() => {
-                btn.classList.add('show');
-            }, 50);
+            setTimeout(() => { btn.classList.add('show'); }, 50);
         }, 2200);
 
         function startSite() {
-            const music = document.getElementById('bg-music');
-            music.volume = 0.2; 
-            music.play().catch(e => console.log("Музыка ожидает клика"));
-
             document.getElementById('loader').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('loader').style.display = 'none';
                 const main = document.getElementById('main-content');
                 main.style.opacity = '1';
             }, 1300);
+        }
+
+        // Управление проигрыванием треков
+        function toggleSong(id, btn) {
+            const audio = document.getElementById(id);
+            
+            if (!audio.paused) {
+                audio.pause();
+                btn.innerText = 'play';
+                btn.classList.remove('playing');
+            } else {
+                // Останавливаем другие песни, если они играли
+                const allAudios = document.querySelectorAll('audio');
+                const allButtons = document.querySelectorAll('.play-btn');
+                allAudios.forEach(track => track.pause());
+                allButtons.forEach(button => {
+                    button.innerText = 'play';
+                    button.classList.remove('playing');
+                });
+
+                // Запускаем выбранную песню на тихой громкости
+                audio.volume = 0.2;
+                audio.play().catch(e => console.log("Файл не найден или заблокирован"));
+                btn.innerText = 'pause';
+                btn.classList.add('playing');
+            }
         }
     </script>
 </body>
