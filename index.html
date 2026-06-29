@@ -176,44 +176,56 @@
                 btn.innerText = 'pause';
                 btn.classList.add('playing');
             }
-        }         // Тут заканчивается твой старый код музыки...
-    } 
-        // --- ВОТ СЮДА ВСТАВЛЯЕМ КОД АНИМАЦИИ ВКЛАДКИ ---
-    const titleFrames = [
-        "!", "! 𝑺", "! 𝑺𝑬", "! 𝑺𝑬𝑵", "! 𝑺𝑬𝑵𝑺", "! 𝑺𝑬𝑵𝑺𝑬", 
-        "! 𝑺𝑬𝑵𝑺𝑬𝑫", 
-        "! 𝑺𝑬𝑵𝑺𝑬", "! 𝑺𝑬𝑵𝑺", "! 𝑺𝑬𝑵", "! 𝑺𝑬", "! 𝑺", "!"
-    ];
-    let currentTitleFrame = 0;
-    let isTitleDeleting = false;
+        } // Массив из 13 кадров для анимации вкладки
+const titleFrames = [
+    "!", 
+    "! 𝑺", 
+    "! 𝑺𝑬", 
+    "! 𝑺𝑬𝑵", 
+    "! 𝑺𝑬𝑵𝑺", 
+    "! 𝑺𝑬𝑵𝑺𝑬", 
+    "! 𝑺𝑬𝑵𝑺𝑬𝑫", // Полное название
+    "! 𝑺𝑬𝑵𝑺𝑬", 
+    "! 𝑺𝑬𝑵𝑺", 
+    "! 𝑺𝑬𝑵", 
+    "! 𝑺𝑬", 
+    "! 𝑺", 
+    "!"
+];
 
-    function animateBrowserTitle() {
-        document.title = titleFrames[currentTitleFrame];
-        let speed = 250;
-        if (!isTitleDeleting) {
-            if (currentTitleFrame === 6) {
-                isTitleDeleting = true;
-                speed = 2000; // Пауза 5 секунд
-            } else {
-                currentTitleFrame++;
-            }
+let currentTitleFrame = 0;
+let isTitleDeleting = false;
+
+function animateBrowserTitle() {
+    // Меняем название вкладки на текущий кадр
+    document.title = titleFrames[currentTitleFrame];
+
+    let speed = 250; // Скорость печати букв (250 миллисекунд)
+
+    if (!isTitleDeleting) {
+        // Если дошли до полного названия (! 𝑺𝑬𝑵𝑺𝑬𝑫)
+        if (currentTitleFrame === 6) {
+            isTitleDeleting = true;
+            speed = 5000; // Пауза ровно 5 секунд
         } else {
-            if (currentTitleFrame === 12) {
-                isTitleDeleting = false;
-                speed = 500;
-                currentTitleFrame = 0;
-            } else {
-                currentTitleFrame++;
-            }
+            currentTitleFrame++;
         }
-        setTimeout(animateBrowserTitle, speed);
+    } else {
+        // Если стерли до одного знака (!)
+        if (currentTitleFrame === 12) {
+            isTitleDeleting = false;
+            speed = 500; // Небольшая пауза перед новым циклом
+            currentTitleFrame = 0;
+        } else {
+            currentTitleFrame++;
+        }
     }
-    animateBrowserTitle();
-    // --- КОНЕЦ КОДА АНИМАЦИИ ---
 
-    </script>
-</body>
-</html>
+    setTimeout(animateBrowserTitle, speed);
+}
+
+// Запускаем анимацию вкладки сразу при загрузке страницы
+animateBrowserTitle();
 
     </script>
 </body>
