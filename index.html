@@ -10,9 +10,16 @@
         
         /* Экран загрузки */
         #loader { position: fixed; top:0; left:0; width:100%; height:100%; background:#0d0d0d; z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition: opacity 1.3s ease; }
-        #loading-text { font-size: 1.8rem; opacity: 0; animation: fadeIn 2.5s forwards; color: #fff; letter-spacing: 7px; text-transform: uppercase; text-align: center; padding: 0 10px; }
-        #enter-btn { margin-top: 30px; font-size: 0.9rem; opacity: 0; cursor: pointer; color: #777; border: 1px solid #333; padding: 12px 24px; background: none; transition: 0.4s; display: none; text-transform: lowercase; }
+        
+        /* Надпись Добро Пожаловать */
+        #loading-text { font-size: 1.8rem; opacity: 0; animation: fadeInText 2s forwards; color: #fff; letter-spacing: 7px; text-transform: uppercase; text-align: center; padding: 0 10px; }
+        
+        /* Кнопка входа с плавной анимацией выдвижения */
+        #enter-btn { margin-top: 30px; font-size: 0.9rem; cursor: pointer; color: #777; border: 1px solid #333; padding: 12px 24px; background: none; text-transform: lowercase; display: none; opacity: 0; transform: translateY(20px); transition: opacity 1.5s ease, transform 1.5s ease, color 0.4s, border-color 0.4s, background 0.4s; }
         #enter-btn:hover { color: #fff; border-color: #fff; background: #151515; box-shadow: 0 0 10px rgba(255,255,255,0.1); }
+
+        /* Появление кнопки */
+        #enter-btn.show { display: block; opacity: 1; transform: translateY(0); }
 
         /* Главный контент */
         #main-content { opacity: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 20px; transition: opacity 1.5s ease; }
@@ -33,20 +40,20 @@
         .gallery img { width: 100%; height: 140px; object-fit: cover; border-radius: 4px; filter: grayscale(50%); transition: 0.4s ease; border: 1px solid #222; }
         .gallery img:hover { filter: grayscale(0%); transform: translateY(-2px); border-color: #555; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInText { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <!-- Фоновое аудио -->
     <audio id="bg-music" loop prefetch="auto">
-        <source src="https://audio.com/ded-9/audio/startafight-valence-and-brae" type="audio/wav">
+        <source src="https://audio.com" type="audio/wav">
         <source src="https://soundhelix.com" type="audio/mp3">
     </audio>
 
     <!-- Загрузка -->
     <div id="loader">
-        <div id="loading-text">Ворсинка</div>
+        <div id="loading-text">Добро Пожаловать</div>
         <button id="enter-btn" onclick="startSite()">нажмите, чтобы продолжить</button>
     </div>
 
@@ -84,12 +91,16 @@
     </div>
 
     <script>
-        // Появление кнопки "продолжить"
+        // Медленное и плавное выдвижение кнопки снизу вверх
         setTimeout(() => {
             const btn = document.getElementById('enter-btn');
-            btn.style.display = 'block';
-            setTimeout(() => btn.style.opacity = '1', 50);
-        }, 2200);
+            btn.style.display = 'block'; // Включаем кнопку в структуру
+            
+            // Маленькая задержка, чтобы браузер успел применить display и включил плавную анимацию
+            setTimeout(() => {
+                btn.classList.add('show');
+            }, 50);
+        }, 2200); // Кнопка начнет выплывать через 2.2 секунды после текста
 
         function startSite() {
             const music = document.getElementById('bg-music');
