@@ -122,6 +122,39 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
         }
+                /* Стили для кнопки переключения режима */
+        .glow-toggle-btn {
+            background: none;
+            border: none;
+            color: #444;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: monospace;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+        .glow-toggle-btn:hover {
+            color: #888;
+        }
+        /* Эффекты неонового свечения при активации класса .glow-mode на body */
+        body.glow-mode {
+            color: #e0e0e0;
+            text-shadow: 0 0 4px rgba(255,255,255,0.3);
+        }
+        body.glow-mode h1 {
+            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+        body.glow-mode .profile-card,
+        body.glow-mode .play-btn,
+        body.glow-mode #bottom-player {
+            border-color: #555 !important;
+            box-shadow: 0 0 15px rgba(255,255,255,0.08) !important;
+        }
+        body.glow-mode .gallery img {
+            border-color: #666;
+            box-shadow: 0 0 10px rgba(255,255,255,0.05);
+        }
     </style>
 </head>
 <body>
@@ -138,7 +171,7 @@
             <h1>Ворсинка</h1>
             <div class="info-line">Name: Денис</div>
             <div class="info-line info-line-last">Age group: 16-17</div>
-
+            <button class="glow-toggle-btn" onclick="toggleGlowMode()">[glow mode: off]</button>
             <div class="section">
                 <h2>The games I play</h2>
                 <ul>
@@ -344,7 +377,20 @@ function meow(element) {
     setTimeout(() => { meowText.remove(); }, 800);
     setTimeout(() => { img.classList.remove('bounce-effect'); }, 300);
 }        
-
+function toggleGlowMode() {
+    // Переключаем класс glow-mode у всего документа body
+    document.body.classList.toggle('glow-mode');
+    
+    // Находим кнопку и меняем её текст в зависимости от режима
+    const btn = document.querySelector('.glow-toggle-btn');
+    if (document.body.classList.contains('glow-mode')) {
+        btn.innerText = '[glow mode: on]';
+        btn.style.color = '#fff';
+    } else {
+        btn.innerText = '[glow mode: off]';
+        btn.style.color = '#444';
+    }
+}
 // Запускаем анимацию вкладки сразу при загрузке страницы
 animateBrowserTitle();
 
