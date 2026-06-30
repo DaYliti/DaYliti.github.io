@@ -264,19 +264,19 @@
         }
                 /* Наша секретная точка внизу карточки */
         .secret-dot {
-            width: 30px;                /* Сделали огромной, 30 пикселей! */
-            height: 30px;
-            background: #fff;           /* Ярко-белый цвет */
-            opacity: 1;                 /* Полностью видимая, без прозрачности */
-            margin: 30px auto 0 auto;   /* Сделали отступ побольше, чтобы она опустилась ниже кнопок */
+            position: absolute;
+            bottom: 8px;       /* Прижали к самому низу карточки */
+            right: 12px;       /* Сдвинули в самый правый угол */
+            font-size: 0.65rem; /* Сделали значок крошечным */
+            color: #222;       /* Цвет почти сливается с фоном карточки */
             cursor: pointer;
-            border-radius: 50%;
-            box-shadow: 0 0 15px #fff;  /* Добавили ей мощное белое свечение */
-            transition: background-color 0.3s;
+            font-family: monospace;
+            user-select: none;
+            transition: color 0.2s;
         }
         .secret-dot:hover {
-            background-color: #00ff00;  /* При наведении становится ядовито-зеленой */
-            box-shadow: 0 0 15px #00ff00;
+            color: #00ff00;    /* При наведении загорается хакерским зелёным */
+            text-shadow: 0 0 5px #00ff00;
         }
         /* Режим жесткого хакерского взлома */
         body.hacker-mode {
