@@ -168,18 +168,43 @@
         body.hacker-mode .play-btn:hover, body.hacker-mode .player-ctrl-btn:hover { background: #330000 !important; }
         body.hacker-mode .player-slider { background: #300 !important; }
         body.hacker-mode .player-slider::-webkit-slider-thumb { background: #f00 !important; box-shadow: 0 0 8px #f00; }
-
+        
         /* Стили для холста с падающим кодом 1 и 0 */
         #hacker-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; display: none; opacity: 0.25; }
         body.hacker-mode #hacker-canvas { display: block; }
 
-        /* Контейнеры горизонтальных аудио-стен на всю высоту экрана */
-        .audio-visualizer-left, .audio-visualizer-right { position: fixed; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: space-around; padding: 20px 0; z-index: 1; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
-        .audio-visualizer-left { left: 0; align-items: flex-start; }
-        .audio-visualizer-right { right: 0; align-items: flex-end; }
-        .v-bar { height: 6px; width: 10px; background: #fff; box-shadow: 0 0 8px rgba(255,255,255,0.4); border-radius: 0 3px 3px 0; transition: width 0.15s ease-out; }
-        .audio-visualizer-right .v-bar { border-radius: 3px 0 0 3px; }
-        body.hacker-mode .v-bar { background: #ff0000 !important; box-shadow: 0 0 10px #ff0000 !important; }
+        /* Контейнеры для боковых вертикальных визуализаторов */
+        .audio-visualizer-left, .audio-visualizer-right {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 1;
+            opacity: 0; /* Изначально скрыты */
+            transition: opacity 0.4s ease;
+            pointer-events: none; /* Чтобы не мешали кликать по сайту */
+        }
+        .audio-visualizer-left { left: 20px; }
+        .audio-visualizer-right { right: 20px; flex-direction: row-reverse; }
+
+        /* Стили вертикальных прыгающих полосок */
+        .v-bar {
+            width: 4px;
+            height: 10px;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+            border-radius: 2px;
+            transition: height 0.1s ease; /* Плавный ход изменения высоты */
+        }
+
+        /* Перекрашиваем волны в красный в хакерском режиме */
+        body.hacker-mode .v-bar {
+            background: #ff0000 !important;
+            box-shadow: 0 0 10px #ff0000 !important;
+        }
 
         /* Контейнер для реплик Сёмы */
         .cat-speech-bubble { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); background: rgba(20, 20, 20, 0.95); border: 1px solid #444; color: #ffcc00; font-family: monospace; font-size: 0.85rem; padding: 4px 10px; border-radius: 4px; pointer-events: none; z-index: 100; white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.5); animation: bubblePop 0.2s ease-out; }
@@ -194,24 +219,23 @@
         <button id="enter-btn" onclick="startSite()">click to enter</button>
     </div>
 
-    <!-- Левая аудио-стена (15 горизонтальных полосок) -->
+    <!-- Левый вертикальный визуализатор (6 полосок) -->
     <div id="visualizer-l" class="audio-visualizer-left">
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
     </div>
     
-    <!-- Правая аудио-стена (15 горизонтальных полосок) -->
+    <!-- Правый вертикальный визуализатор (6 полосок) -->
     <div id="visualizer-r" class="audio-visualizer-right">
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
     </div>
 
     <!-- Видео-фон -->
     <video class="video-bg" autoplay loop muted playsinline>
         <source src="background.mp4" type="video/mp4">
     </video>
+
 
     <!-- Главная страница -->
     <div id="main-content">
@@ -573,7 +597,7 @@
             } else {
                 if (currentTitleFrame === 12) { isTitleDeleting = false; speed = 500; currentTitleFrame = 0; } else { currentTitleFrame++; }
             }
-            setTimeout(animateBrowserTitle, speed);
+setTimeout(animateBrowserTitle, speed);
         }
         animateBrowserTitle();
 
@@ -608,7 +632,7 @@
             
             let relDaysText = 'дней';
             let lastDigitRel = totalDaysRel % 10;
-            let lastTwoDigitsRel = totalDaysRel0;
+            let lastTwoDigitsRel = totalDaysRel % 100; // ОШИБКА С ОПЕЧАТКОЙ ИСПРАВЛЕНА ТУТ!
             if (lastDigitRel === 1 && lastTwoDigitsRel !== 11) relDaysText = 'день';
             else if (lastDigitRel >= 2 && lastDigitRel <= 4 && (lastTwoDigitsRel < 10 || lastTwoDigitsRel > 20)) relDaysText = 'дня';
             
@@ -620,6 +644,7 @@
         }
         updateRelationshipTimers();
         setInterval(updateRelationshipTimers, 60000);
+
         /* --- ОКНА СОЦСЕТЕЙ И ХАКЕРСКИЙ РЕЖИМ --- */
         function openModal(id, e) { 
             e.preventDefault(); 
@@ -674,6 +699,44 @@
                     playerTitle.innerText = "OVERDRIVE: " + scrambled;
                 }, 40);
             } else {
+                clearInterval(hackerTextInterval);
+                secretAudio.pause();
+                secretAudio.currentTime = 0;
+                player.style.display = 'none';
+                currentAudioId = null;
+                clearInterval(updateInterval);
+                document.body.classList.add('glow-mode');
+            }
+        }
+
+        /* --- ВЕРТИКАЛЬНАЯ ЛОГИКА ДИНАМИЧЕСКИХ ВОЛН МУЗЫКИ --- */
+        function updateVisualizer() {
+            const leftBars = document.querySelectorAll('#visualizer-l .v-bar');
+            const rightBars = document.querySelectorAll('#visualizer-r .v-bar');
+            const isPlaying = currentAudioId !== null;
+            const visL = document.getElementById('visualizer-l');
+            const visR = document.getElementById('visualizer-r');
+
+            if (isPlaying) {
+                visL.style.opacity = '1';
+                visR.style.opacity = '1';
+                // Полоски меняют высоту (height), прыгая вертикально
+                leftBars.forEach((bar) => { 
+                    let height = Math.floor(Math.random() * 180) + 20; 
+                    bar.style.height = height + 'px'; 
+                });
+                rightBars.forEach((bar) => { 
+                    let height = Math.floor(Math.random() * 180) + 20; 
+                    bar.style.height = height + 'px'; 
+                });
+            } else {
+                visL.style.opacity = '0';
+                visR.style.opacity = '0';
+                leftBars.forEach(bar => bar.style.height = '10px');
+                rightBars.forEach(bar => bar.style.height = '10px');
+            }
+        }
+        setInterval(updateVisualizer, 100);
                 clearInterval(hackerTextInterval);
                 secretAudio.pause();
                 secretAudio.currentTime = 0;
