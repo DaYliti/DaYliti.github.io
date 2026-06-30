@@ -324,6 +324,26 @@ function animateBrowserTitle() {
 
     setTimeout(animateBrowserTitle, speed);
 }
+function meow(element) {
+    const meowText = document.createElement('div');
+    meowText.classList.add('meow-text');
+    meowText.innerText = 'Мяу!';
+
+    const rect = element.getBoundingClientRect();
+    const x = Math.random() * (rect.width - 40);
+    const y = Math.random() * (rect.height - 20);
+
+    meowText.style.left = x + 'px';
+    meowText.style.top = y + 'px';
+
+    element.appendChild(meowText);
+
+    const img = element.querySelector('img');
+    img.classList.add('bounce-effect');
+
+    setTimeout(() => { meowText.remove(); }, 800);
+    setTimeout(() => { img.classList.remove('bounce-effect'); }, 300);
+}        
 
 // Запускаем анимацию вкладки сразу при загрузке страницы
 animateBrowserTitle();
