@@ -602,6 +602,40 @@
         }
         updateRelationshipTimers();
         setInterval(updateRelationshipTimers, 60000);
+                // Функция открытия окна Discord
+        function openDiscordModal(e) {
+            e.preventDefault(); // Отменяем переход по ссылке
+            document.getElementById('discord-popup').classList.add('active');
+        }
+
+        // Функция закрытия окна
+        function closeDiscordModal() {
+            document.getElementById('discord-popup').classList.remove('active');
+        }
+
+        // Клик в любое место экрана мимо окна закрывает его
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('discord-popup');
+            const discordBtn = document.querySelector('a[onclick*="openDiscordModal"]');
+            if (modal.classList.contains('active') && !modal.contains(e.target) && e.target !== discordBtn) {
+                closeDiscordModal();
+            }
+        });
+
+        // Функция копирования никнейма при клике на него
+        function copyDiscordName() {
+            navigator.clipboard.writeText('vvariozunf');
+            const usernameDiv = document.querySelector('.modal-username');
+            const oldText = usernameDiv.innerText;
+            
+            usernameDiv.innerText = 'copied!';
+            usernameDiv.style.color = '#88ff88'; // Подсветим зеленым
+            
+            setTimeout(() => {
+                usernameDiv.innerText = oldText;
+                usernameDiv.style.color = '#fff';
+            }, 1500);
+        }
     </script>
 </body>
 </html>
