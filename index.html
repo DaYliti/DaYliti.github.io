@@ -382,6 +382,39 @@
             background: #ff0000 !important;
             box-shadow: 0 0 10px #ff0000 !important;
         }
+                /* Контейнер для реплик Сёмы */
+        .cat-speech-bubble {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid #444;
+            color: #ffcc00; /* Жёлтый цвет для предупреждения */
+            font-family: monospace;
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            pointer-events: none;
+            z-index: 100;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            animation: bubblePop 0.2s ease-out;
+        }
+        /* Стиль для ультра-ярости на 40 кликов */
+        .cat-speech-bubble.rage-mode {
+            color: #ff0000 !important;
+            font-size: 1.4rem !important;
+            font-weight: bold !important;
+            border-color: #ff0000 !important;
+            text-shadow: 0 0 10px #ff0000;
+            box-shadow: 0 0 15px rgba(255,0,0,0.4);
+            top: -45px;
+        }
+        @keyframes bubblePop {
+            0% { transform: translateX(-50%) scale(0.8); opacity: 0; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        }
     </style>
 </head>
 <body class="glow-mode">
@@ -465,7 +498,7 @@
                 </div>
             </div>
 
-            <div class="gallery">
+            <div class="gallery" style="position: relative;">
                 <div class="gallery-item" onclick="meow(this)">
                     <img src="https://i.postimg.cc/G275ccP3/zimo.jpg" alt="Cat 1">
                 </div>
@@ -668,7 +701,11 @@
             audio.volume = value;
         }
 
+        let catClickCount = 0;
+        let catClickTimeout = null;
+
         function meow(element) {
+            // Обычный эффект вылетания текста "Мяу!"
             const meowText = document.createElement('div');
             meowText.classList.add('meow-text');
             meowText.innerText = 'Мяу!';
@@ -679,15 +716,49 @@
 
             meowText.style.left = x + 'px';
             meowText.style.top = y + 'px';
-
             element.appendChild(meowText);
 
             const img = element.querySelector('img');
-            img.classList.add('bounce-effect');
+            if (img) img.classList.add('bounce-effect');
 
             setTimeout(() => { meowText.remove(); }, 800);
-            setTimeout(() => { img.classList.remove('bounce-effect'); }, 300);
-        }        
+            setTimeout(() => { if (img) img.classList.remove('bounce-effect'); }, 300);
+
+            // --- ЛОГИКА РАЗДРАЖЕНИЯ СЁМЫ ---
+            catClickCount++;
+
+            // Сбрасываем старый таймер и запускаем новый на 4 секунды
+            clearTimeout(catClickTimeout);
+            catClickTimeout = setTimeout(() => {
+                catClickCount = 0; // Если не кликал 4 секунды — Сёма успокаивается
+                const oldBubble = document.querySelector('.cat-speech-bubble');
+                if (oldBubble) oldBubble.remove();
+            }, 4000);
+
+            // Удаляем старое облачко реплики, если оно уже висит
+            const existingBubble = document.querySelector('.cat-speech-bubble');
+            if (existingBubble) existingBubble.remove();
+
+            // Если натыкали от 10 до 39 раз
+            if (catClickCount >= 10 && catClickCount < 40) {
+                const phrases = ['Хватит!', 'Эй!', 'Остановись!'];
+                const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+
+                const bubble = document.createElement('div');
+                bubble.classList.add('cat-speech-bubble');
+                bubble.innerText = randomPhrase;
+                
+                // Цепляем облачко над тем элементом, по которому кликнули
+                element.appendChild(bubble);
+            } 
+            // Если дошли до ультра-комбо в 40 кликов
+            else if (catClickCount >= 40) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('cat-speech-bubble', 'rage-mode');
+                bubble.innerText = 'МЯЯЯУ!';
+                element.appendChild(bubble);
+            }
+        }  
 
         function toggleGlowMode() {
             document.body.classList.toggle('glow-mode');
