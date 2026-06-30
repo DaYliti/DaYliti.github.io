@@ -378,10 +378,8 @@ function meow(element) {
     setTimeout(() => { img.classList.remove('bounce-effect'); }, 300);
 }        
 function toggleGlowMode() {
-    // Переключаем класс glow-mode у всего документа body
     document.body.classList.toggle('glow-mode');
     
-    // Находим кнопку и меняем её текст в зависимости от режима
     const btn = document.querySelector('.glow-toggle-btn');
     if (document.body.classList.contains('glow-mode')) {
         btn.innerText = '[glow mode: on]';
