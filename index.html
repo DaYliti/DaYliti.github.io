@@ -721,7 +721,7 @@ setTimeout(animateBrowserTitle, speed);
             if (isPlaying) {
                 visL.style.opacity = '1';
                 visR.style.opacity = '1';
-                // Полоски меняют высоту (height), прыгая вертикально
+                // Полоски красиво прыгают в высоту по вертикали
                 leftBars.forEach((bar) => { 
                     let height = Math.floor(Math.random() * 180) + 20; 
                     bar.style.height = height + 'px'; 
@@ -738,43 +738,6 @@ setTimeout(animateBrowserTitle, speed);
             }
         }
         setInterval(updateVisualizer, 100);
-                clearInterval(hackerTextInterval);
-                secretAudio.pause();
-                secretAudio.currentTime = 0;
-                player.style.display = 'none';
-                currentAudioId = null;
-                clearInterval(updateInterval);
-                document.body.classList.add('glow-mode');
-            }
-        }
-
-        /* --- ЛОГИКА ГОРИЗОНТАЛЬНЫХ ВОЛН МУЗЫКИ --- */
-        function updateVisualizer() {
-            const leftBars = document.querySelectorAll('#visualizer-l .v-bar');
-            const rightBars = document.querySelectorAll('#visualizer-r .v-bar');
-            const isPlaying = currentAudioId !== null;
-            const visL = document.getElementById('visualizer-l');
-            const visR = document.getElementById('visualizer-r');
-
-            if (isPlaying) {
-                visL.style.opacity = '1';
-                visR.style.opacity = '1';
-                leftBars.forEach((bar) => { 
-                    let width = Math.floor(Math.random() * 65) + 15; 
-                    bar.style.width = width + 'px'; 
-                });
-                rightBars.forEach((bar) => { 
-                    let width = Math.floor(Math.random() * 65) + 15; 
-                    bar.style.width = width + 'px'; 
-                });
-            } else {
-                visL.style.opacity = '0';
-                visR.style.opacity = '0';
-                leftBars.forEach(bar => bar.style.width = '10px');
-                rightBars.forEach(bar => bar.style.width = '10px');
-            }
-        }
-        setInterval(updateVisualizer, 120);
 
         /* --- АНИМАЦИЯ КРАСНОГО МАТРИЧНОГО ДОЖДЯ --- */
         const canvas = document.getElementById('hacker-canvas');
