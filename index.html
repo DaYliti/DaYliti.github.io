@@ -210,54 +210,43 @@
             border-color: #666;
             box-shadow: 0 0 10px rgba(255,255,255,0.05);
         }
-                /* Скрываем стандартный курсор на компьютерах */
+        
+        /* Скрываем стандартный курсор только на ПК */
         @media (pointer: fine) {
-            body, html, a, button, img, .gallery-item {
+            body, html, a, button, img, .gallery-item, input {
                 cursor: none !important;
             }
-            #custom-cursor-dot, #custom-cursor-ring {
-                display: block;
+            #custom-cursor {
+                display: block !important;
             }
         }
-        /* Стили для кастомного курсора */
-        #custom-cursor-dot {
+        /* Стили для нового аккуратного кастомного курсора */
+        #custom-cursor {
             display: none;
             position: fixed;
-            width: 4px;
-            height: 4px;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
             background-color: #fff;
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 99999;
             transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, opacity 0.2s;
+            box-shadow: 0 0 8px #fff;
+            transition: width 0.15s, height 0.15s, background-color 0.15s, border-color 0.15s;
         }
-        #custom-cursor-ring {
-            display: none;
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: transform 0.08s ease-out, width 0.2s, height 0.2s, border-color 0.2s, background 0.2s;
-        }
-        /* Стиль при наведении на интерактивные элементы */
-        body.cursor-hover #custom-cursor-dot {
-            opacity: 0;
-        }
-        body.cursor-hover #custom-cursor-ring {
-            width: 45px;
-            height: 45px;
-            border-color: rgba(255, 255, 255, 0.8);
-            background: rgba(255, 255, 255, 0.05);
+        /* Эффект увеличения курсора при наведении на кнопки и картинки */
+        body.cursor-hover #custom-cursor {
+            width: 24px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid #fff;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
 <body class="glow-mode">
-
     <!-- Загрузка -->
     <div id="loader">
         <div id="loading-text">Welcome</div>
