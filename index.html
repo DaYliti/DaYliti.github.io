@@ -262,6 +262,43 @@
         .video-overlay {
             display: none; /* Полностью отключаем оверлей, он больше не нужен */
         }
+                /* Наша секретная точка внизу карточки */
+        .secret-dot {
+            width: 3px;
+            height: 3px;
+            background: #222;
+            margin: 20px auto 0 auto;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        .secret-dot:hover {
+            background: #555; /* Еле заметно подсвечивается при наведении */
+        }
+        /* Режим жесткого хакерского взлома */
+        body.hacker-mode {
+            background-color: #000 !important;
+            color: #00ff00 !important;
+            text-shadow: 0 0 8px #00ff00 !important;
+        }
+        body.hacker-mode .profile-card,
+        body.hacker-mode #bottom-player,
+        body.hacker-mode .social-modal {
+            border-color: #00ff00 !important;
+            background: rgba(0, 0, 0, 0.9) !important;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) !important;
+        }
+        body.hacker-mode h1, body.hacker-mode h2, body.hacker-mode span {
+            color: #00ff00 !important;
+            text-shadow: 0 0 10px #00ff00 !important;
+        }
+        body.hacker-mode .play-btn, body.hacker-mode .player-ctrl-btn, body.hacker-mode .modal-link-btn {
+            border-color: #00ff00 !important;
+            color: #00ff00 !important;
+        }
+        body.hacker-mode .play-btn:hover, body.hacker-mode .player-ctrl-btn:hover {
+            background: #003300 !important;
+        }
     </style>
 </head>
 <body class="glow-mode">
@@ -359,6 +396,7 @@
                 <a href="javascript:void(0)" onclick="openModal('tiktok-popup', event)" class="social-btn">[ tiktok ]</a>
                 <a href="javascript:void(0)" onclick="openModal('steam-popup', event)" class="social-btn">[ steam ]</a>
             </div>
+            <div class="secret-dot" onclick="activateHackerMode()" title="???"></div>
         </div>
     </div>
 
@@ -414,7 +452,7 @@
         <a href="https://steamcommunity.com/profiles/76561199741654298/" target="_blank" class="modal-link-btn">Link</a>
         <div class="modal-footer">Steam</div>
     </div>
-    
+    <audio id="secret-track" loop><source src="secret.mp3" type="audio/mp3"></audio>
     <div id="custom-cursor"></div>
     <script>
 
@@ -696,6 +734,32 @@
                 document.body.classList.remove('cursor-hover');
             }
         });
+                // Функция включения хакерского режима-пасхалки
+        function activateHackerMode() {
+            document.body.classList.toggle('hacker-mode');
+            const secretAudio = document.getElementById('secret-track');
+            
+            if (document.body.classList.contains('hacker-mode')) {
+                // Если включили: вырубаем обычный glow mode, если он был активен
+                document.body.classList.remove('glow-mode');
+                
+                // Глушим все обычные песни, если они играли
+                if (typeof pauseCurrentTrack === "function") {
+                    pauseCurrentTrack();
+                }
+                const allAudios = document.querySelectorAll('audio:not(#secret-track)');
+                allAudios.forEach(track => track.pause());
+                
+                // Врубаем секретную музыку
+                secretAudio.volume = 0.15;
+                secretAudio.play().catch(e => console.log("Секретный трек запущен"));
+            } else {
+                // Если выключили: возвращаем секретный трек на паузу и возвращаем дефолтный glow-mode
+                secretAudio.pause();
+                secretAudio.currentTime = 0;
+                document.body.classList.add('glow-mode');
+            }
+        }
     </script>
 </body>
 </html>
