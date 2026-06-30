@@ -55,6 +55,46 @@
         .gallery img:hover { filter: grayscale(0%); transform: translateY(-2px); border-color: #555; }
 
         @keyframes fadeInText { from { opacity: 0; } to { opacity: 1; } }
+        #bottom-player {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #121212;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 10px 20px;
+            display: none; /* Появляется только когда играет музыка */
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+            z-index: 100;
+            max-width: 90%;
+            width: 400px;
+        }
+        #player-track-title {
+            font-size: 0.8rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+        }
+        .player-ctrl-btn {
+            background: none;
+            border: 1px solid #444;
+            color: #888;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-family: monospace;
+            transition: 0.2s;
+        }
+        .player-ctrl-btn:hover {
+            color: #fff;
+            border-color: #666;
+        }
     </style>
 </head>
 <body>
@@ -137,7 +177,10 @@
             </div>
         </div>
     </div>
-
+      <div id="bottom-player">
+        <span id="player-track-title">Сейчас играет: ...</span>
+        <button class="player-ctrl-btn" id="player-pause-btn" onclick="pauseCurrentTrack()">pause</button>
+    </div>
     <script>
         setTimeout(() => {
             const btn = document.getElementById('enter-btn');
@@ -153,15 +196,20 @@
                 main.style.opacity = '1';
             }, 1300);
         }
+         let currentAudioId = null;
 
-        // Управление проигрыванием треков
         function toggleSong(id, btn) {
             const audio = document.getElementById(id);
+            const player = document.getElementById('bottom-player');
+            const playerTitle = document.getElementById('player-track-title');
+            const trackName = btn.parentElement.querySelector('span').innerText;
             
             if (!audio.paused) {
                 audio.pause();
                 btn.innerText = 'play';
                 btn.classList.remove('playing');
+                player.style.display = 'none';
+                currentAudioId = null;
             } else {
                 const allAudios = document.querySelectorAll('audio');
                 const allButtons = document.querySelectorAll('.play-btn');
@@ -171,13 +219,34 @@
                     button.classList.remove('playing');
                 });
 
-                // Громкость теперь 0.1 (в два раза тише, чем было)
                 audio.volume = 0.1;
                 audio.play().catch(e => console.log("Файл воспроизводится"));
                 btn.innerText = 'pause';
                 btn.classList.add('playing');
+                
+                player.style.display = 'flex';
+                playerTitle.innerText = trackName;
+                currentAudioId = id;
             }
-        } // Массив из 13 кадров для анимации вкладки
+        }
+
+        function pauseCurrentTrack() {
+            if (currentAudioId) {
+                const audio = document.getElementById(currentAudioId);
+                const allButtons = document.querySelectorAll('.play-btn');
+                allButtons.forEach(button => {
+                    if (button.getAttribute('onclick').includes(currentAudioId)) {
+                        button.innerText = 'play';
+                        button.classList.remove('playing');
+                    }
+                });
+                
+                audio.pause();
+                document.getElementById('bottom-player').style.display = 'none';
+                currentAudioId = null;
+            }
+        }
+   // Массив из 13 кадров для анимации вкладки
 const titleFrames = [
     "!", 
     "! 𝑺", 
