@@ -350,6 +350,38 @@
             background: #f00 !important;
             box-shadow: 0 0 8px #f00;
         }
+                /* Контейнеры для боковых визуализаторов */
+        .audio-visualizer-left, .audio-visualizer-right {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 300px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 1;
+            opacity: 0; /* Изначально скрыты */
+            transition: opacity 0.4s ease;
+            pointer-events: none; /* Чтобы не мешали кликать по сайту */
+        }
+        .audio-visualizer-left { left: 20px; }
+        .audio-visualizer-right { right: 20px; flex-direction: row-reverse; } /* Разворачиваем правый */
+
+        /* Стили самих прыгающих полосок */
+        .v-bar {
+            width: 4px;
+            height: 10px;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+            border-radius: 2px;
+            transition: height 0.1s ease;
+        }
+
+        /* Перекрашиваем волны в красный в хакерском режиме */
+        body.hacker-mode .v-bar {
+            background: #ff0000 !important;
+            box-shadow: 0 0 10px #ff0000 !important;
+        }
     </style>
 </head>
 <body class="glow-mode">
@@ -505,6 +537,16 @@
     </div>
     <audio id="secret-track" loop><source src="secret.mp3" type="audio/mp3"></audio>
     <canvas id="hacker-canvas"></canvas>
+        <!-- Левый визуализатор -->
+    <div id="visualizer-l" class="audio-visualizer-left">
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+    </div>
+    <!-- Правый визуализатор -->
+    <div id="visualizer-r" class="audio-visualizer-right">
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+    </div>
     <div id="custom-cursor"></div>
     <script>
 
@@ -885,6 +927,42 @@
 
         // Запускаем бесконечный цикл рисования дождя (скорость 40мс)
         setInterval(drawMatrix, 40);
+                let visualizerInterval = null;
+
+        function updateVisualizer() {
+            const leftBars = document.querySelectorAll('#visualizer-l .v-bar');
+            const rightBars = document.querySelectorAll('#visualizer-r .v-bar');
+            const isPlaying = currentAudioId !== null;
+
+            const visL = document.getElementById('visualizer-l');
+            const visR = document.getElementById('visualizer-r');
+
+            if (isPlaying) {
+                // Если музыка играет — плавно показываем волны
+                visL.style.opacity = '1';
+                visR.style.opacity = '1';
+
+                // Заставляем полоски рандомно прыгать в красивом диапазоне
+                leftBars.forEach((bar, index) => {
+                    // Каждая полоска получает случайную высоту от 20 до 200 пикселей
+                    let height = Math.floor(Math.random() * 180) + 20;
+                    bar.style.height = height + 'px';
+                });
+                rightBars.forEach((bar, index) => {
+                    let height = Math.floor(Math.random() * 180) + 20;
+                    bar.style.height = height + 'px';
+                });
+            } else {
+                // Если пауза — плавно тушим и сбрасываем высоту
+                visL.style.opacity = '0';
+                visR.style.opacity = '0';
+                leftBars.forEach(bar => bar.style.height = '10px');
+                rightBars.forEach(bar => bar.style.height = '10px');
+            }
+        }
+
+        // Запускаем постоянный контроль за плеером (обновление каждые 100 миллисекунд)
+        setInterval(updateVisualizer, 100);
     </script>
 </body>
 </html>
