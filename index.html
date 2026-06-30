@@ -296,9 +296,24 @@
             </div>
         </div>
     </div>
-      <div id="bottom-player">
-        <span id="player-track-title">Сейчас играет: ...</span>
-        <button class="player-ctrl-btn" id="player-pause-btn" onclick="pauseCurrentTrack()">pause</button>
+         <div id="bottom-player">
+        <!-- Верхняя строчка: название и кнопка паузы + громкость -->
+        <div class="player-top-row">
+            <span id="player-track-title">Сейчас играет: ...</span>
+            <div class="player-controls-right">
+                <div class="volume-container">
+                    <span class="player-time">vol</span>
+                    <input type="range" class="player-slider volume-slider" id="player-volume" min="0" max="1" step="0.01" value="0.1" oninput="changePlayerVolume(this.value)">
+                </div>
+                <button class="player-ctrl-btn" id="player-pause-btn" onclick="pauseCurrentTrack()">pause</button>
+            </div>
+        </div>
+        <!-- Нижиняя строчка: перемотка и время песни -->
+        <div class="player-slider-container">
+            <span class="player-time" id="player-current-time">00:00</span>
+            <input type="range" class="player-slider" id="player-progress" min="0" max="100" value="0" oninput="seekTrack(this.value)">
+            <span class="player-time" id="player-total-time">00:00</span>
+        </div>
     </div>
     <script>
         setTimeout(() => {
