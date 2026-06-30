@@ -323,6 +323,13 @@
         body.hacker-mode #hacker-canvas {
             display: block;
         }
+                body.hacker-mode .player-slider {
+            background: #300 !important;
+        }
+        body.hacker-mode .player-slider::-webkit-slider-thumb {
+            background: #f00 !important;
+            box-shadow: 0 0 8px #f00;
+        }
     </style>
 </head>
 <body class="glow-mode">
@@ -760,28 +767,57 @@
             }
         });
                 // Функция включения хакерского режима-пасхалки
+        let hackerTextInterval = null; // Переменная для таймера глитча текста
+
         function activateHackerMode() {
             document.body.classList.toggle('hacker-mode');
             const secretAudio = document.getElementById('secret-track');
+            const player = document.getElementById('bottom-player');
+            const playerTitle = document.getElementById('player-track-title');
             
+            // Набор хакерских символов для глитча названия
+            const glitchChars = "01XYZ§$Ø𝚺𝛀☠☣𝜡𝜢 get_hacked_";
+
             if (document.body.classList.contains('hacker-mode')) {
-                // Если включили: вырубаем обычный glow mode, если он был активен
                 document.body.classList.remove('glow-mode');
                 
-                // Глушим все обычные песни, если они играли
+                // Тушим обычные песни, если они играли
                 if (typeof pauseCurrentTrack === "function") {
                     pauseCurrentTrack();
                 }
                 const allAudios = document.querySelectorAll('audio:not(#secret-track)');
                 allAudios.forEach(track => track.pause());
                 
-                // Врубаем секретную музыку
+                // Врубаем секретный музон
                 secretAudio.volume = 0.15;
                 secretAudio.play().catch(e => console.log("Секретный трек запущен"));
+                currentAudioId = 'secret-track'; // Привязываем плеер к секретному треку
+
+                // Показываем нижний плеер
+                player.style.display = 'flex';
+                
+                // Запускаем отслеживание времени перемотки
+                clearInterval(updateInterval);
+                updateInterval = setInterval(updatePlayerProgress, 250);
+
+                // ЗАПУСКАЕМ БЕЗУМНЫЙ ГЛИТЧ БУКВ В НАЗВАНИИ ПЕСНИ
+                clearInterval(hackerTextInterval);
+                hackerTextInterval = setInterval(() => {
+                    let scrambled = "";
+                    for (let i = 0; i < 22; i++) {
+                        scrambled += glitchChars[Math.floor(Math.random() * glitchChars.length)];
+                    }
+                    playerTitle.innerText = "OVERDRIVE: " + scrambled;
+                }, 40); // Скорость обновления букв — каждые 40 миллисекунд
+
             } else {
-                // Если выключили: возвращаем секретный трек на паузу и возвращаем дефолтный glow-mode
+                // Если хакерский режим выключили
+                clearInterval(hackerTextInterval); // Останавливаем глитч букв
                 secretAudio.pause();
                 secretAudio.currentTime = 0;
+                player.style.display = 'none';
+                currentAudioId = null;
+                clearInterval(updateInterval);
                 document.body.classList.add('glow-mode');
             }
         }
