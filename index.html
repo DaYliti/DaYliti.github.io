@@ -132,6 +132,32 @@
         .relationship-timers { margin-top: 10px; padding-left: 10px; border-left: 1px solid #333; }
         .timer-item { font-size: 0.8rem; color: #8a8a8a; font-family: monospace; margin-bottom: 4px; }
         .timer-item span { color: #fff; font-weight: bold; }
+                /* Стили для блока соцсетей */
+        .social-links {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .social-btn {
+            color: #555;
+            font-size: 0.8rem;
+            font-family: monospace;
+            text-decoration: none;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        .social-btn:hover {
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        /* Стилизация для режима Glow Mode */
+        body.glow-mode .social-btn {
+            color: #666;
+        }
+        body.glow-mode .social-btn:hover {
+            color: #fff;
+        }
 
         /* Видео-фон */
         .video-bg { 
@@ -240,6 +266,12 @@
                 <div class="gallery-item" onclick="meow(this)">
                     <img src="https://i.postimg.cc/BnF9M1TN/spit.jpg" alt="Cat 2">
                 </div>
+            </div>
+            <div class="social-links">
+                <a href="#" target="_blank" class="social-btn">[ telegram ]</a>
+                <a href="#" target="_blank" class="social-btn">[ discord ]</a>
+                <a href="#" target="_blank" class="social-btn">[ tiktok ]</a>
+                <a href="#" target="_blank" class="social-btn">[ steam ]</a>
             </div>
         </div>
     </div>
@@ -426,17 +458,16 @@
                 cursor.style.top = e.clientY + 'px';
             }
         });
-
-        document.addEventListener('mouseover', (e) => {
+                    document.addEventListener('mouseover', (e) => {
             if (!e.target) return;
-            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG' || e.target.closest('.gallery-item') || e.target.closest('.player-slider') || e.target.closest('.glow-toggle-btn')) {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG' || e.target.tagName === 'A' || e.target.closest('.gallery-item') || e.target.closest('.player-slider') || e.target.closest('.glow-toggle-btn')) {
                 document.body.classList.add('cursor-hover');
             }
         });
 
         document.addEventListener('mouseout', (e) => {
             if (!e.target) return;
-            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG' || e.target.closest('.gallery-item') || e.target.closest('.player-slider') || e.target.closest('.glow-toggle-btn')) {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG' || e.target.tagName === 'A' || e.target.closest('.gallery-item') || e.target.closest('.player-slider') || e.target.closest('.glow-toggle-btn')) {
                 document.body.classList.remove('cursor-hover');
             }
         });
