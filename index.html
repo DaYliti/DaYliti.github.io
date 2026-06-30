@@ -264,16 +264,18 @@
         }
                 /* Наша секретная точка внизу карточки */
         .secret-dot {
-            width: 3px;
-            height: 3px;
-            background: #222;
-            margin: 20px auto 0 auto;
+            width: 4px;         /* Сделали чуть крупнее, 4 пикселя */
+            height: 4px;
+            background: #fff;   /* Поменяли на белый цвет */
+            opacity: 0.15;       /* Сделали её почти прозрачной (едва заметной) */
+            margin: 25px auto 0 auto;
             cursor: pointer;
             border-radius: 50%;
-            transition: background 0.3s;
+            transition: opacity 0.3s, background-color 0.3s;
         }
         .secret-dot:hover {
-            background: #555; /* Еле заметно подсвечивается при наведении */
+            opacity: 1;         /* Когда наводишь мышку, она загорается на 100% */
+            background-color: #00ff00; /* И становится зелёной хакерской точкой! */
         }
         /* Режим жесткого хакерского взлома */
         body.hacker-mode {
