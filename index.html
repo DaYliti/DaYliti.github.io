@@ -263,21 +263,41 @@
             display: none; /* Полностью отключаем оверлей, он больше не нужен */
         }
                 /* Наша секретная точка внизу карточки */
-       .hacker-trigger {
+        .hacker-trigger {
             position: absolute;
-            bottom: 8px;       /* Намертво прижали к нижнему краю карточки */
-            right: 12px;       /* Намертво сдвинули в правый угол */
+            bottom: 8px;       
+            right: 12px;       
             font-size: 0.65rem;
-            color: #222;       /* Сделали его очень темным и скрытным */
+            color: #222;       
             cursor: pointer;
             font-family: monospace;
             user-select: none;
             transition: color 0.2s;
-            z-index: 10;       /* Чтобы он точно был поверх всех фонов */
+            z-index: 10;       
+            display: flex;
+            align-items: center;
+            gap: 6px; /* Расстояние между текстом и плюсиком */
         }
+        /* Стили для ультра-четкого маленького текста */
+        .hacker-trigger span {
+            font-size: 0.6rem;
+            color: #500; /* Изначально темно-красный, едва заметный цвет */
+            font-family: sans-serif; /* Простой шрифт без засечек для максимальной четкости */
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            -webkit-font-smoothing: none; /* Отключаем размытие и сглаживание */
+            -moz-osx-font-smoothing: none;
+            font-smooth: never;
+            text-rendering: crispEdges;
+            transition: color 0.2s;
+        }
+        /* Эффект при наведении на всю секретную зону */
         .hacker-trigger:hover {
-            color: #00ff00;    /* При наведении загорается зеленым */
-            text-shadow: 0 0 5px #00ff00;
+            color: #ff0000 !important;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        .hacker-trigger:hover span {
+            color: #ff3333 !important; /* Текст загорается четким красным */
         }
         /* Режим жесткого КРАСНОГО хакерского взлома */
         body.hacker-mode {
