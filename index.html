@@ -944,31 +944,28 @@
             const visR = document.getElementById('visualizer-r');
 
             if (isPlaying) {
-                // Если музыка играет — плавно показываем волны
                 visL.style.opacity = '1';
                 visR.style.opacity = '1';
 
-                // Заставляем полоски рандомно прыгать в красивом диапазоне
-                leftBars.forEach((bar, index) => {
-                    // Каждая полоска получает случайную высоту от 20 до 200 пикселей
-                    let height = Math.floor(Math.random() * 180) + 20;
-                    bar.style.height = height + 'px';
+                // МЕНЕЕ ЧУВСТВИТЕЛЬНЫЙ ХОД: Длина аккуратно гуляет от 15 до 80 пикселей (не на весь экран)
+                leftBars.forEach((bar) => {
+                    let width = Math.floor(Math.random() * 65) + 15;
+                    bar.style.width = width + 'px';
                 });
-                rightBars.forEach((bar, index) => {
-                    let height = Math.floor(Math.random() * 180) + 20;
-                    bar.style.height = height + 'px';
+                rightBars.forEach((bar) => {
+                    let width = Math.floor(Math.random() * 65) + 15;
+                    bar.style.width = width + 'px';
                 });
             } else {
-                // Если пауза — плавно тушим и сбрасываем высоту
                 visL.style.opacity = '0';
                 visR.style.opacity = '0';
-                leftBars.forEach(bar => bar.style.height = '10px');
-                rightBars.forEach(bar => bar.style.height = '10px');
+                leftBars.forEach(bar => bar.style.width = '10px');
+                rightBars.forEach(bar => bar.style.width = '10px');
             }
         }
 
-        // Запускаем постоянный контроль за плеером (обновление каждые 100 миллисекунд)
-        setInterval(updateVisualizer, 100);
+        // Обновляем чуть реже (раз в 120мс), чтобы движения были ещё более плавными и размеренными
+        setInterval(updateVisualizer, 120);
     </script>
 </body>
 </html>
