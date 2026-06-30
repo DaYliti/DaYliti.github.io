@@ -158,6 +158,68 @@
         body.glow-mode .social-btn:hover {
             color: #fff;
         }
+                /* Стили для всплывающего окна Discord */
+        .discord-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: rgba(18, 18, 18, 0.95);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 25px 30px;
+            text-align: center;
+            z-index: 1000;
+            width: 320px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        /* Класс для плавного показа окна */
+        .discord-modal.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+        .modal-title {
+            font-size: 0.85rem;
+            color: #666;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .modal-username {
+            font-size: 1.3rem;
+            color: #fff;
+            letter-spacing: 1px;
+            cursor: pointer; /* Сделаем кликабельным для копирования */
+            padding: 5px;
+            transition: color 0.2s;
+        }
+        .modal-username:hover {
+            color: #999;
+        }
+        .modal-footer {
+            font-size: 0.65rem;
+            color: #333;
+            margin-top: 20px;
+            text-align: right;
+            letter-spacing: 1px;
+        }
+        /* Кнопка закрытия окошка */
+        .modal-close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #444;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .modal-close-btn:hover {
+            color: #fff;
+        }
 
         /* Видео-фон */
         .video-bg { 
@@ -269,7 +331,7 @@
             </div>
             <div class="social-links">
                 <a href="#" target="_blank" class="social-btn">[ telegram ]</a>
-                <a href="#" target="_blank" class="social-btn">[ discord ]</a>
+                <a href="javascript:void(0)" onclick="openDiscordModal(event)" class="social-btn">[ discord ]</a>
                 <a href="#" target="_blank" class="social-btn">[ tiktok ]</a>
                 <a href="#" target="_blank" class="social-btn">[ steam ]</a>
             </div>
@@ -292,6 +354,12 @@
             <input type="range" class="player-slider" id="player-progress" min="0" max="100" value="0" oninput="seekTrack(this.value)">
             <span class="player-time" id="player-total-time">00:00</span>
         </div>
+    </div>
+        <div id="discord-popup" class="discord-modal">
+        <button class="modal-close-btn" onclick="closeDiscordModal()">×</button>
+        <div class="modal-title">my username:</div>
+        <div class="modal-username" onclick="copyDiscordName()" title="Нажми, чтобы скопировать">vvariozunf</div>
+        <div class="modal-footer">Discord</div>
     </div>
     
     <div id="custom-cursor"></div>
