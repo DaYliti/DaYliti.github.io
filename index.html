@@ -350,46 +350,34 @@
             background: #f00 !important;
             box-shadow: 0 0 8px #f00;
         }
-                /* Скрываем стандартный курсор только на ПК */
-        @media (pointer: fine) {
-            body, html, a, button, img, .gallery-item, input { cursor: none !important; }
-            #custom-cursor { display: block !important; }
-        }
-        /* Стили для кастомного курсора */
-        #custom-cursor { display: none; position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: #fff; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); box-shadow: 0 0 8px #fff; transition: width 0.15s, height 0.15s, background-color 0.15s; }
-        body.cursor-hover #custom-cursor { width: 24px; height: 24px; background-color: rgba(255, 255, 255, 0.15); border: 1px solid #fff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
-
-        /* Контейнеры горизонтальных аудио-стен на всю высоту экрана */
+                /* Контейнеры для боковых визуализаторов */
         .audio-visualizer-left, .audio-visualizer-right {
             position: fixed;
-            top: 0;
-            height: 100vh;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 300px;
             display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            padding: 20px 0;
+            align-items: center;
+            gap: 4px;
             z-index: 1;
-            opacity: 0; 
-            transition: opacity 0.5s ease;
-            pointer-events: none; 
+            opacity: 0; /* Изначально скрыты */
+            transition: opacity 0.4s ease;
+            pointer-events: none; /* Чтобы не мешали кликать по сайту */
         }
-        .audio-visualizer-left { left: 0; align-items: flex-start; }
-        .audio-visualizer-right { right: 0; align-items: flex-end; }
+        .audio-visualizer-left { left: 20px; }
+        .audio-visualizer-right { right: 20px; flex-direction: row-reverse; } /* Разворачиваем правый */
 
-        /* Стили горизонтальных полосок */
+        /* Стили самих прыгающих полосок */
         .v-bar {
-            height: 6px;
-            width: 10px;
+            width: 4px;
+            height: 10px;
             background: #fff;
-            box-shadow: 0 0 8px rgba(255,255,255,0.4);
-            border-radius: 0 3px 3px 0;
-            transition: width 0.15s ease-out;
-        }
-        .audio-visualizer-right .v-bar {
-            border-radius: 3px 0 0 3px;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+            border-radius: 2px;
+            transition: height 0.1s ease;
         }
 
-        /* Перекрашивание в красный для хакерского режима */
+        /* Перекрашиваем волны в красный в хакерском режиме */
         body.hacker-mode .v-bar {
             background: #ff0000 !important;
             box-shadow: 0 0 10px #ff0000 !important;
@@ -549,20 +537,17 @@
     </div>
     <audio id="secret-track" loop><source src="secret.mp3" type="audio/mp3"></audio>
     <canvas id="hacker-canvas"></canvas>
-    
-    <!-- Левая аудио-стена (15 полосок) -->
+        <!-- Левый визуализатор -->
     <div id="visualizer-l" class="audio-visualizer-left">
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
     </div>
-    
-    <!-- Правая аудио-стена (15 полосок) -->
+    <!-- Правый визуализатор -->
     <div id="visualizer-r" class="audio-visualizer-right">
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
-        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+        <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
     </div>
+    <div id="custom-cursor"></div>
     <script>
 
         setTimeout(() => {
@@ -942,6 +927,7 @@
 
         // Запускаем бесконечный цикл рисования дождя (скорость 40мс)
         setInterval(drawMatrix, 40);
+                let visualizerInterval = null;
 
         function updateVisualizer() {
             const leftBars = document.querySelectorAll('#visualizer-l .v-bar');
@@ -952,28 +938,31 @@
             const visR = document.getElementById('visualizer-r');
 
             if (isPlaying) {
+                // Если музыка играет — плавно показываем волны
                 visL.style.opacity = '1';
                 visR.style.opacity = '1';
 
-                // МЕНЕЕ ЧУВСТВИТЕЛЬНЫЙ ХОД: Длина аккуратно гуляет от 15 до 80 пикселей (не на весь экран)
-                leftBars.forEach((bar) => {
-                    let width = Math.floor(Math.random() * 75) + 20;
-                    bar.style.width = width + 'px';
+                // Заставляем полоски рандомно прыгать в красивом диапазоне
+                leftBars.forEach((bar, index) => {
+                    // Каждая полоска получает случайную высоту от 20 до 200 пикселей
+                    let height = Math.floor(Math.random() * 180) + 20;
+                    bar.style.height = height + 'px';
                 });
-                rightBars.forEach((bar) => {
-                    let width = Math.floor(Math.random() * 75) + 20;
-                    bar.style.width = width + 'px';
+                rightBars.forEach((bar, index) => {
+                    let height = Math.floor(Math.random() * 180) + 20;
+                    bar.style.height = height + 'px';
                 });
             } else {
+                // Если пауза — плавно тушим и сбрасываем высоту
                 visL.style.opacity = '0';
                 visR.style.opacity = '0';
-                leftBars.forEach(bar => bar.style.width = '10px');
-                rightBars.forEach(bar => bar.style.width = '10px');
+                leftBars.forEach(bar => bar.style.height = '10px');
+                rightBars.forEach(bar => bar.style.height = '10px');
             }
         }
 
-        // Обновляем чуть реже (раз в 120мс), чтобы движения были ещё более плавными и размеренными
-        setInterval(updateVisualizer, 120);
+        // Запускаем постоянный контроль за плеером (обновление каждые 100 миллисекунд)
+        setInterval(updateVisualizer, 100);
     </script>
 </body>
 </html>
