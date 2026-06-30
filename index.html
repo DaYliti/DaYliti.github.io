@@ -95,6 +95,33 @@
             color: #fff;
             border-color: #666;
         }
+             .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .meow-text {
+            position: absolute;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            pointer-events: none;
+            animation: meowFade 0.8s ease-out forwards;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+        @keyframes meowFade {
+            0% { opacity: 0; transform: scale(0.5) translateY(0); }
+            20% { opacity: 1; transform: scale(1.2) translateY(-10px); }
+            100% { opacity: 0; transform: scale(1) translateY(-30px); }
+        }
+        .bounce-effect {
+            animation: catBounce 0.3s ease;
+        }
+        @keyframes catBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
     </style>
 </head>
 <body>
@@ -171,9 +198,13 @@
             </div>
 
             <!-- Фотографии котиков в самом низу -->
-            <div class="gallery">
-                <img src="https://i.postimg.cc/G275ccP3/zimo.jpg" alt="Cat 1">
-                <img src="https://i.postimg.cc/BnF9M1TN/spit.jpg" alt="Cat 2">
+                       <div class="gallery">
+                <div class="gallery-item" onclick="meow(this)">
+                    <img src="https://i.postimg.cc/G275ccP3/zimo.jpg" alt="Cat 1">
+                </div>
+                <div class="gallery-item" onclick="meow(this)">
+                    <img src="https://i.postimg.cc/BnF9M1TN/spit.jpg" alt="Cat 2">
+                </div>
             </div>
         </div>
     </div>
