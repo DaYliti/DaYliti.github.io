@@ -330,7 +330,7 @@
                 main.style.opacity = '1';
             }, 1300);
         }
-/* НАЙДИ И ПОЛНОСТЬЮ ЗАМЕНИ СТАРЫЙ БЛОК СКРИПТОВ ПЛЕЕРА НА ЭТОТ: */
+
         let currentAudioId = null;
         let updateInterval = null;
 
@@ -357,7 +357,6 @@
                     button.classList.remove('playing');
                 });
 
-                // Берем громкость из ползунка, чтобы она не сбрасывалась
                 audio.volume = volumeSlider.value;
                 audio.play().catch(e => console.log("Файл воспроизводится"));
                 btn.innerText = 'pause';
@@ -367,7 +366,6 @@
                 playerTitle.innerText = trackName;
                 currentAudioId = id;
 
-                // Запускаем отслеживание времени и прогресса трека
                 clearInterval(updateInterval);
                 updateInterval = setInterval(updatePlayerProgress, 250);
             }
@@ -391,7 +389,6 @@
             }
         }
 
-        // Новая функция: обновление ползунка перемотки и времени
         function updatePlayerProgress() {
             if (!currentAudioId) return;
             const audio = document.getElementById(currentAudioId);
@@ -400,10 +397,8 @@
             const totalTimeLabel = document.getElementById('player-total-time');
 
             if (audio.duration) {
-                // Двигаем ползунок прогресса
                 progressBar.value = (audio.currentTime / audio.duration) * 100;
                 
-                // Считаем минуты и секунды
                 let curMin = Math.floor(audio.currentTime / 60);
                 let curSec = Math.floor(audio.currentTime % 60);
                 let totMin = Math.floor(audio.duration / 60);
@@ -417,7 +412,6 @@
             }
         }
 
-        // Новая функция: перемотка при клике на шкалу
         function seekTrack(value) {
             if (!currentAudioId) return;
             const audio = document.getElementById(currentAudioId);
@@ -426,18 +420,10 @@
             }
         }
 
-        // Новая функция: изменение громкости текущей песни
         function changePlayerVolume(value) {
             if (!currentAudioId) return;
             const audio = document.getElementById(currentAudioId);
             audio.volume = value;
-        }
-                });
-                
-                audio.pause();
-                document.getElementById('bottom-player').style.display = 'none';
-                currentAudioId = null;
-            }
         }
    // Массив из 13 кадров для анимации вкладки
 const titleFrames = [
