@@ -350,34 +350,43 @@
             background: #f00 !important;
             box-shadow: 0 0 8px #f00;
         }
-        /* Контейнеры-стены на всю высоту экрана */
+                /* Скрываем стандартный курсор только на ПК */
+        @media (pointer: fine) {
+            body, html, a, button, img, .gallery-item, input { cursor: none !important; }
+            #custom-cursor { display: block !important; }
+        }
+        /* Стили для кастомного курсора */
+        #custom-cursor { display: none; position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: #fff; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); box-shadow: 0 0 8px #fff; transition: width 0.15s, height 0.15s, background-color 0.15s; }
+        body.cursor-hover #custom-cursor { width: 24px; height: 24px; background-color: rgba(255, 255, 255, 0.15); border: 1px solid #fff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
+
+        /* Контейнеры горизонтальных аудио-стен на всю высоту экрана */
         .audio-visualizer-left, .audio-visualizer-right {
             position: fixed;
             top: 0;
-            height: 100vh; /* Растянули от верха до низа */
+            height: 100vh;
             display: flex;
-            flex-direction: column; /* Полоски теперь лежат друг под другом */
-            justify-content: space-around; /* Равномерно распределяем их по высоте */
+            flex-direction: column;
+            justify-content: space-around;
             padding: 20px 0;
             z-index: 1;
             opacity: 0; 
             transition: opacity 0.5s ease;
             pointer-events: none; 
         }
-        .audio-visualizer-left { left: 0; align-items: flex-start; } /* Растут слева направо */
-        .audio-visualizer-right { right: 0; align-items: flex-end; } /* Растут справа налево */
+        .audio-visualizer-left { left: 0; align-items: flex-start; }
+        .audio-visualizer-right { right: 0; align-items: flex-end; }
 
         /* Стили горизонтальных полосок */
         .v-bar {
-            height: 6px; /* Теперь это толщина полоски */
-            width: 10px; /* Изначальная длина */
+            height: 6px;
+            width: 10px;
             background: #fff;
             box-shadow: 0 0 8px rgba(255,255,255,0.4);
-            border-radius: 0 3px 3px 0; /* Округление только с одной стороны */
-            transition: width 0.15s ease-out; /* Плавный ход изменения длины */
+            border-radius: 0 3px 3px 0;
+            transition: width 0.15s ease-out;
         }
         .audio-visualizer-right .v-bar {
-            border-radius: 3px 0 0 3px; /* Для правой стороны округление слева */
+            border-radius: 3px 0 0 3px;
         }
 
         /* Перекрашивание в красный для хакерского режима */
