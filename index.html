@@ -330,13 +330,16 @@
                 main.style.opacity = '1';
             }, 1300);
         }
-         let currentAudioId = null;
+/* НАЙДИ И ПОЛНОСТЬЮ ЗАМЕНИ СТАРЫЙ БЛОК СКРИПТОВ ПЛЕЕРА НА ЭТОТ: */
+        let currentAudioId = null;
+        let updateInterval = null;
 
         function toggleSong(id, btn) {
             const audio = document.getElementById(id);
             const player = document.getElementById('bottom-player');
             const playerTitle = document.getElementById('player-track-title');
             const trackName = btn.parentElement.querySelector('span').innerText;
+            const volumeSlider = document.getElementById('player-volume');
             
             if (!audio.paused) {
                 audio.pause();
@@ -344,6 +347,7 @@
                 btn.classList.remove('playing');
                 player.style.display = 'none';
                 currentAudioId = null;
+                clearInterval(updateInterval);
             } else {
                 const allAudios = document.querySelectorAll('audio');
                 const allButtons = document.querySelectorAll('.play-btn');
@@ -353,7 +357,8 @@
                     button.classList.remove('playing');
                 });
 
-                audio.volume = 0.1;
+                // Берем громкость из ползунка, чтобы она не сбрасывалась
+                audio.volume = volumeSlider.value;
                 audio.play().catch(e => console.log("Файл воспроизводится"));
                 btn.innerText = 'pause';
                 btn.classList.add('playing');
@@ -361,6 +366,10 @@
                 player.style.display = 'flex';
                 playerTitle.innerText = trackName;
                 currentAudioId = id;
+
+                // Запускаем отслеживание времени и прогресса трека
+                clearInterval(updateInterval);
+                updateInterval = setInterval(updatePlayerProgress, 250);
             }
         }
 
@@ -373,6 +382,56 @@
                         button.innerText = 'play';
                         button.classList.remove('playing');
                     }
+                });
+                
+                audio.pause();
+                document.getElementById('bottom-player').style.display = 'none';
+                currentAudioId = null;
+                clearInterval(updateInterval);
+            }
+        }
+
+        // Новая функция: обновление ползунка перемотки и времени
+        function updatePlayerProgress() {
+            if (!currentAudioId) return;
+            const audio = document.getElementById(currentAudioId);
+            const progressBar = document.getElementById('player-progress');
+            const currentTimeLabel = document.getElementById('player-current-time');
+            const totalTimeLabel = document.getElementById('player-total-time');
+
+            if (audio.duration) {
+                // Двигаем ползунок прогресса
+                progressBar.value = (audio.currentTime / audio.duration) * 100;
+                
+                // Считаем минуты и секунды
+                let curMin = Math.floor(audio.currentTime / 60);
+                let curSec = Math.floor(audio.currentTime % 60);
+                let totMin = Math.floor(audio.duration / 60);
+                let totSec = Math.floor(audio.duration % 60);
+
+                if (curSec < 10) curSec = "0" + curSec;
+                if (totSec < 10) totSec = "0" + totSec;
+
+                currentTimeLabel.innerText = `${curMin}:${curSec}`;
+                totalTimeLabel.innerText = `${totMin}:${totSec}`;
+            }
+        }
+
+        // Новая функция: перемотка при клике на шкалу
+        function seekTrack(value) {
+            if (!currentAudioId) return;
+            const audio = document.getElementById(currentAudioId);
+            if (audio.duration) {
+                audio.currentTime = (value / 100) * audio.duration;
+            }
+        }
+
+        // Новая функция: изменение громкости текущей песни
+        function changePlayerVolume(value) {
+            if (!currentAudioId) return;
+            const audio = document.getElementById(currentAudioId);
+            audio.volume = value;
+        }
                 });
                 
                 audio.pause();
