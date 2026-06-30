@@ -428,6 +428,7 @@
         animateBrowserTitle();
 
         // Расчет счетчиков
+            /* НАЙДИ И ПОЛНОСТЬЮ ЗАМЕНИ ФУНКЦИЮ updateRelationshipTimers НА ЭТУ: */
         function updateRelationshipTimers() {
             const now = new Date();
             const startDateAcq = new Date(2024, 2, 6); 
@@ -438,13 +439,18 @@
             const diffTimeAcq = now - lastAnniversary;
             const daysAcq = Math.floor(diffTimeAcq / (1000 * 60 * 60 * 24));
             
+            // Исправленные безопасные проверки окончаний вместо поломанных .includes
             let yearsText = 'лет';
-            if (yearsAcq % 10 === 1 && yearsAcq % 100 !== 11) yearsText = 'год';
-            else if ([2, 3, 4].includes(yearsAcq % 10) && ![12, 13, 14].includes(yearsAcq % 100)) yearsText = 'года';
+            let lastDigitYear = yearsAcq % 10;
+            let lastTwoDigitsYear = yearsAcq % 100;
+            if (lastDigitYear === 1 && lastTwoDigitsYear !== 11) yearsText = 'год';
+            else if (lastDigitYear >= 2 && lastDigitYear <= 4 && (lastTwoDigitsYear < 10 || lastTwoDigitsYear > 20)) yearsText = 'года';
             
             let daysText = 'дней';
-            if (daysAcq % 10 === 1 && daysAcq % 100 !== 11) daysText = 'день';
-            else if ([2, 3, 4].includes(daysAcq % 10) && ![12, 13, 14].includes(daysAcq % 100)) daysText = 'дня';
+            let lastDigitDay = daysAcq % 10;
+            let lastTwoDigitsDay = daysAcq % 100;
+            if (lastDigitDay === 1 && lastTwoDigitsDay !== 11) daysText = 'день';
+            else if (lastDigitDay >= 2 && lastDigitDay <= 4 && (lastTwoDigitsDay < 10 || lastTwoDigitsDay > 20)) daysText = 'дня';
             
             document.getElementById('acquaintance-timer').innerText = `${yearsAcq} ${yearsText} и ${daysAcq} ${daysText}`;
 
@@ -453,11 +459,16 @@
             const totalDaysRel = Math.floor(diffTimeRel / (1000 * 60 * 60 * 24));
             
             let relDaysText = 'дней';
-            if (totalDaysRel % 10 === 1 && totalDaysRel % 100 !== 11) relDaysText = 'день';
-            else if ([2, 3, 4].includes(totalDaysRel % 10) && ![12, 13, 14].includes(totalDaysRel % 100)) relDaysText = 'дня';
+            let lastDigitRel = totalDaysRel % 10;
+            let lastTwoDigitsRel = totalDaysRel % 100;
+            if (lastDigitRel === 1 && lastTwoDigitsRel !== 11) relDaysText = 'день';
+            else if (lastDigitRel >= 2 && lastDigitRel <= 4 && (lastTwoDigitsRel < 10 || lastTwoDigitsRel > 20)) relDaysText = 'дня';
             
-            if (totalDaysRel < 0) { document.getElementById('relationship-timer').innerText = 'скоро наступит'; }
-            else { document.getElementById('relationship-timer').innerText = `${totalDaysRel} ${relDaysText}`; }
+            if (totalDaysRel < 0) { 
+                document.getElementById('relationship-timer').innerText = 'скоро наступит'; 
+            } else { 
+                document.getElementById('relationship-timer').innerText = `${totalDaysRel} ${relDaysText}`; 
+            }
         }
         updateRelationshipTimers();
         setInterval(updateRelationshipTimers, 60000);
