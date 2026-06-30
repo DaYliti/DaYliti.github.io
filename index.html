@@ -128,11 +128,12 @@
         #custom-cursor { display: none; position: fixed; top: 0; left: 0; width: 8px; height: 8px; background-color: #fff; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); box-shadow: 0 0 8px #fff; transition: width 0.15s, height 0.15s, background-color 0.15s; }
         body.cursor-hover #custom-cursor { width: 24px; height: 24px; background-color: rgba(255, 255, 255, 0.15); border: 1px solid #fff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.4); }
 
-        /* Счетчики отношений */
+/* Счетчики отношений */
         .relationship-timers { margin-top: 10px; padding-left: 10px; border-left: 1px solid #333; }
         .timer-item { font-size: 0.8rem; color: #8a8a8a; font-family: monospace; margin-bottom: 4px; }
         .timer-item span { color: #fff; font-weight: bold; }
-                /* Стили для блока соцсетей */
+
+        /* Стили для блока соцсетей */
         .social-links {
             margin-top: 30px;
             display: flex;
@@ -158,8 +159,9 @@
         body.glow-mode .social-btn:hover {
             color: #fff;
         }
-                /* Стили для всплывающего окна Discord */
-        .discord-modal {
+
+        /* Общие стили для ВСЕХ всплывающих окон соцсетей */
+        .social-modal {
             position: fixed;
             top: 50%;
             left: 50%;
@@ -176,51 +178,72 @@
             pointer-events: none;
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        /* Класс для плавного показа окна */
-        .discord-modal.active {
+        .social-modal.active {
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);
             pointer-events: auto;
         }
-        .modal-title {
-            font-size: 0.85rem;
-            color: #666;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+        .modal-title { 
+            font-size: 0.85rem; 
+            color: #666; 
+            letter-spacing: 1px; 
+            margin-bottom: 8px; 
         }
-        .modal-username {
-            font-size: 1.3rem;
-            color: #fff;
-            letter-spacing: 1px;
-            cursor: pointer; /* Сделаем кликабельным для копирования */
-            padding: 5px;
-            transition: color 0.2s;
+        .modal-username { 
+            font-size: 1.3rem; 
+            color: #fff; 
+            letter-spacing: 1px; 
+            cursor: pointer; 
+            padding: 5px; 
+            transition: color 0.2s; 
         }
-        .modal-username:hover {
-            color: #999;
+        .modal-username:hover { 
+            color: #999; 
         }
-        .modal-footer {
-            font-size: 0.75rem; /* Сделали шрифт крупнее и заметнее (было 0.65) */
-            color: #555;        /* Сделали цвет более видимым (было #333) */
-            margin-top: 25px;   /* Отодвинули надпись еще ниже от никнейма */
-            text-align: right;
-            letter-spacing: 1px;
-            margin-right: -15px; /* Сдвинули надпись максимально правее к самому краю */
-            margin-bottom: -15px; /* Опустили надпись максимально ниже к самому краю */
-        }
-        /* Кнопка закрытия окошка */
-        .modal-close-btn {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #444;
+        
+        /* Кнопка-ссылка Link для перехода */
+        .modal-link-btn {
+            display: inline-block;
+            margin-top: 15px;
             font-size: 0.8rem;
-            cursor: pointer;
+            color: #888;
+            border: 1px solid #444;
+            padding: 6px 16px;
+            background: none;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: 0.2s;
         }
-        .modal-close-btn:hover {
-            color: #fff;
+        .modal-link-btn:hover { 
+            color: #fff; 
+            border-color: #fff; 
+            background: #222; 
+        }
+
+        /* Название соцсети в нижнем правом углу */
+        .modal-footer { 
+            font-size: 0.75rem; 
+            color: #555; 
+            margin-top: 25px; 
+            text-align: right; 
+            letter-spacing: 1px; 
+            margin-right: -15px; 
+            margin-bottom: -15px; 
+        }
+        
+        /* Кнопка закрытия окошка (крестик) */
+        .modal-close-btn { 
+            position: absolute; 
+            top: 5px; 
+            right: 10px; 
+            background: none; 
+            border: none; 
+            color: #444; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+        }
+        .modal-close-btn:hover { 
+            color: #fff; 
         }
 
         /* Видео-фон */
@@ -357,15 +380,45 @@
             <span class="player-time" id="player-total-time">00:00</span>
         </div>
     </div>
-        <div id="discord-popup" class="discord-modal">
-        <button class="modal-close-btn" onclick="closeDiscordModal()">×</button>
+
+    <!-- Окно Telegram -->
+    <div id="telegram-popup" class="social-modal">
+        <button class="modal-close-btn" onclick="closeModal('telegram-popup')">×</button>
         <div class="modal-title">my username:</div>
-        <div class="modal-username" onclick="copyDiscordName()" title="Нажми, чтобы скопировать">vvariozunf</div>
+        <div class="modal-username" onclick="copyText('@DaYliti', this)" title="Нажми, чтобы скопировать">@DaYliti</div>
+        <a href="https://t.me" target="_blank" class="modal-link-btn">Link</a>
+        <div class="modal-footer">Telegram</div>
+    </div>
+
+    <!-- Окно Discord -->
+    <div id="discord-popup" class="social-modal">
+        <button class="modal-close-btn" onclick="closeModal('discord-popup')">×</button>
+        <div class="modal-title">my username:</div>
+        <div class="modal-username" onclick="copyText('vvariozunf', this)" title="Нажми, чтобы скопировать">vvariozunf</div>
         <div class="modal-footer">Discord</div>
+    </div>
+
+    <!-- Окно TikTok -->
+    <div id="tiktok-popup" class="social-modal">
+        <button class="modal-close-btn" onclick="closeModal('tiktok-popup')">×</button>
+        <div class="modal-title">my username:</div>
+        <div class="modal-username" onclick="copyText('@DaYliti', this)" title="Нажми, чтобы скопировать">@DaYliti</div>
+        <a href="https://tiktok.com" target="_blank" class="modal-link-btn">Link</a>
+        <div class="modal-footer">TikTok</div>
+    </div>
+
+    <!-- Окно Steam -->
+    <div id="steam-popup" class="social-modal">
+        <button class="modal-close-btn" onclick="closeModal('steam-popup')">×</button>
+        <div class="modal-title">my nickname:</div>
+        <div class="modal-username" onclick="copyText('DaYliti', this)" title="Нажми, чтобы скопировать">DaYliti</div>
+        <a href="https://steamcommunity.com" target="_blank" class="modal-link-btn">Link</a>
+        <div class="modal-footer">Steam</div>
     </div>
     
     <div id="custom-cursor"></div>
-        <script>
+    <script>
+
         setTimeout(() => {
             const btn = document.getElementById('enter-btn');
             if (btn) {
@@ -559,8 +612,7 @@
         }
         animateBrowserTitle();
 
-        // Расчет счетчиков
-            /* НАЙДИ И ПОЛНОСТЬЮ ЗАМЕНИ ФУНКЦИЮ updateRelationshipTimers НА ЭТУ: */
+// Расчет счетчиков
         function updateRelationshipTimers() {
             const now = new Date();
             const startDateAcq = new Date(2024, 2, 6); 
@@ -571,7 +623,6 @@
             const diffTimeAcq = now - lastAnniversary;
             const daysAcq = Math.floor(diffTimeAcq / (1000 * 60 * 60 * 24));
             
-            // Исправленные безопасные проверки окончаний вместо поломанных .includes
             let yearsText = 'лет';
             let lastDigitYear = yearsAcq % 10;
             let lastTwoDigitsYear = yearsAcq % 100;
@@ -604,40 +655,51 @@
         }
         updateRelationshipTimers();
         setInterval(updateRelationshipTimers, 60000);
-                // Функция открытия окна Discord
-        function openDiscordModal(e) {
-            e.preventDefault(); // Отменяем переход по ссылке
-            document.getElementById('discord-popup').classList.add('active');
+
+        /* --- УНИВЕРСАЛЬНАЯ ЛОГИКА ДЛЯ ОКН СОЦСЕТЕЙ --- */
+        
+        // Открытие любого окна
+        function openModal(id, e) {
+            e.preventDefault();
+            document.getElementById(id).classList.add('active');
         }
 
-        // Функция закрытия окна
-        function closeDiscordModal() {
-            document.getElementById('discord-popup').classList.remove('active');
+        // Закрытие любого окна
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
         }
 
-        // Клик в любое место экрана мимо окна закрывает его
+        // Клик в пустое место экрана закрывает любое активное окно
         window.addEventListener('click', (e) => {
-            const modal = document.getElementById('discord-popup');
-            const discordBtn = document.querySelector('a[onclick*="openDiscordModal"]');
-            if (modal.classList.contains('active') && !modal.contains(e.target) && e.target !== discordBtn) {
-                closeDiscordModal();
+            const activeModal = document.querySelector('.social-modal.active');
+            if (activeModal && !activeModal.contains(e.target) && !e.target.classList.contains('social-btn')) {
+                activeModal.classList.remove('active');
             }
         });
 
-        // Функция копирования никнейма при клике на него
-        function copyDiscordName() {
-            navigator.clipboard.writeText('vvariozunf');
-            const usernameDiv = document.querySelector('.modal-username');
-            const oldText = usernameDiv.innerText;
-            
-            usernameDiv.innerText = 'copied!';
-            usernameDiv.style.color = '#88ff88'; // Подсветим зеленым
-            
+        // Функция копирования текста
+        function copyText(textToCopy, element) {
+            navigator.clipboard.writeText(textToCopy);
+            const oldText = element.innerText;
+            element.innerText = 'copied!';
+            element.style.color = '#88ff88'; // Подсветка зеленым
             setTimeout(() => {
-                usernameDiv.innerText = oldText;
-                usernameDiv.style.color = '#fff';
+                element.innerText = oldText;
+                element.style.color = '#fff';
             }, 1500);
         }
+
+        // Обучаем кастомный курсор реагировать на кнопки Link внутри модалок
+        document.addEventListener('mouseover', (e) => {
+            if (e.target && e.target.classList.contains('modal-link-btn')) {
+                document.body.classList.add('cursor-hover');
+            }
+        });
+        document.addEventListener('mouseout', (e) => {
+            if (e.target && e.target.classList.contains('modal-link-btn')) {
+                document.body.classList.remove('cursor-hover');
+            }
+        });
     </script>
 </body>
 </html>
