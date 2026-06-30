@@ -518,6 +518,30 @@ function animateBrowserTitle() {
 
     setTimeout(animateBrowserTitle, speed);
 }
+        const dot = document.getElementById('custom-cursor-dot');
+const ring = document.getElementById('custom-cursor-ring');
+
+// Отслеживаем движение мыши
+window.addEventListener('mousemove', (e) => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+    
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+});
+
+// Проверяем, навел ли пользователь мышь на кнопку или картинку
+document.addEventListener('mouseover', (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG' || e.target.closest('.gallery-item') || e.target.closest('.player-slider')) {
+        document.body.classList.add('cursor-hover');
+    }
+});
+
+document.addEventListener('mouseout', (e) => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG' || e.target.closest('.gallery-item') || e.target.closest('.player-slider')) {
+        document.body.classList.remove('cursor-hover');
+    }
+});
 function meow(element) {
     const meowText = document.createElement('div');
     meowText.classList.add('meow-text');
