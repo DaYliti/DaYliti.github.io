@@ -63,14 +63,21 @@
             background: #121212;
             border: 1px solid #333;
             border-radius: 6px;
-            padding: 10px 20px;
-            display: none; /* Появляется только когда играет музыка */
-            align-items: center;
-            gap: 15px;
+            padding: 12px 20px;
+            display: none;
+            flex-direction: column; /* Теперь элементы будут в две строки */
+            gap: 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.7);
             z-index: 100;
-            max-width: 90%;
-            width: 400px;
+            max-width: 95%;
+            width: 440px;
+        }
+        .player-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 15px;
         }
         #player-track-title {
             font-size: 0.8rem;
@@ -79,6 +86,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
             flex-grow: 1;
+        }
+        .player-controls-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         .player-ctrl-btn {
             background: none;
@@ -94,6 +106,49 @@
         .player-ctrl-btn:hover {
             color: #fff;
             border-color: #666;
+        }
+        /* Стили для ползунков (громкость и перемотка) */
+        .player-slider-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            gap: 10px;
+        }
+        .player-time {
+            font-size: 0.7rem;
+            color: #666;
+            font-family: monospace;
+            min-width: 35px;
+        }
+        .player-slider {
+            flex-grow: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #222;
+            height: 4px;
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+        .player-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #888;
+            transition: background 0.2s;
+        }
+        .player-slider::-webkit-slider-thumb:hover {
+            background: #fff;
+        }
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .volume-slider {
+            width: 60px;
         }
              .gallery-item {
             position: relative;
