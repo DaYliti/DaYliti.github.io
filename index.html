@@ -279,29 +279,49 @@
             color: #00ff00;    /* При наведении загорается зеленым */
             text-shadow: 0 0 5px #00ff00;
         }
-        /* Режим жесткого хакерского взлома */
+        /* Режим жесткого КРАСНОГО хакерского взлома */
         body.hacker-mode {
             background-color: #000 !important;
-            color: #00ff00 !important;
-            text-shadow: 0 0 8px #00ff00 !important;
+            color: #ff0000 !important;
+            text-shadow: 0 0 8px #ff0000 !important;
         }
         body.hacker-mode .profile-card,
         body.hacker-mode #bottom-player,
         body.hacker-mode .social-modal {
-            border-color: #00ff00 !important;
-            background: rgba(0, 0, 0, 0.9) !important;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) !important;
+            border-color: #ff0000 !important;
+            background: rgba(0, 0, 0, 0.95) !important;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.25) !important;
         }
         body.hacker-mode h1, body.hacker-mode h2, body.hacker-mode span {
-            color: #00ff00 !important;
-            text-shadow: 0 0 10px #00ff00 !important;
+            color: #ff0000 !important;
+            text-shadow: 0 0 10px #ff0000 !important;
         }
         body.hacker-mode .play-btn, body.hacker-mode .player-ctrl-btn, body.hacker-mode .modal-link-btn {
-            border-color: #00ff00 !important;
-            color: #00ff00 !important;
+            border-color: #ff0000 !important;
+            color: #ff0000 !important;
         }
         body.hacker-mode .play-btn:hover, body.hacker-mode .player-ctrl-btn:hover {
-            background: #003300 !important;
+            background: #330000 !important;
+        }
+        .hacker-trigger:hover {
+            color: #ff0000 !important;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        /* Стили для холста с падающим кодом 1 и 0 */
+        #hacker-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Встанет прямо поверх видео-фона, но под карточкой */
+            pointer-events: none;
+            display: none; /* Появляется только при активации */
+            opacity: 0.25; /* Делаем блеклым, чтобы не слепило глаза */
+        }
+        body.hacker-mode #hacker-canvas {
+            display: block;
         }
     </style>
 </head>
@@ -457,6 +477,7 @@
         <div class="modal-footer">Steam</div>
     </div>
     <audio id="secret-track" loop><source src="secret.mp3" type="audio/mp3"></audio>
+    <canvas id="hacker-canvas"></canvas>
     <div id="custom-cursor"></div>
     <script>
 
@@ -764,6 +785,50 @@
                 document.body.classList.add('glow-mode');
             }
         }
+                /* --- АНИМАЦИЯ КРАСНОГО МАТРИЧНОГО ДОЖДЯ --- */
+        const canvas = document.getElementById('hacker-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Растягиваем холст на весь экран
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Набор символов (только 1 и 0)
+        const matrixChars = "01".split("");
+        const fontSize = 14;
+        let columns = canvas.width / fontSize;
+        let drops = [];
+
+        // Инициализируем капли
+        for (let x = 0; x < columns; x++) drops[x] = 1;
+
+        function drawMatrix() {
+            // Рисуем полупрозрачный фон для эффекта плавного затухания шлейфа цифр
+            ctx.fillStyle = "rgba(0, 0, 0, 0.06)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#ff0000"; // Красный цвет кода
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                // Случайный выбор между 0 и 1
+                const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Если капля достигла низа экрана, скидываем её наверх со случайной задержкой
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        // Запускаем бесконечный цикл рисования дождя (скорость 40мс)
+        setInterval(drawMatrix, 40);
     </script>
 </body>
 </html>
