@@ -210,6 +210,50 @@
             border-color: #666;
             box-shadow: 0 0 10px rgba(255,255,255,0.05);
         }
+                /* Скрываем стандартный курсор на компьютерах */
+        @media (pointer: fine) {
+            body, html, a, button, img, .gallery-item {
+                cursor: none !important;
+            }
+            #custom-cursor-dot, #custom-cursor-ring {
+                display: block;
+            }
+        }
+        /* Стили для кастомного курсора */
+        #custom-cursor-dot {
+            display: none;
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background-color: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, opacity 0.2s;
+        }
+        #custom-cursor-ring {
+            display: none;
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: transform 0.08s ease-out, width 0.2s, height 0.2s, border-color 0.2s, background 0.2s;
+        }
+        /* Стиль при наведении на интерактивные элементы */
+        body.cursor-hover #custom-cursor-dot {
+            opacity: 0;
+        }
+        body.cursor-hover #custom-cursor-ring {
+            width: 45px;
+            height: 45px;
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.05);
+        }
     </style>
 </head>
 <body class="glow-mode">
